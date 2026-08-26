@@ -19,6 +19,20 @@
 <body>
   <div id="root"></div>
 
+  <!-- Netlify Identity Widget（处理邀请确认和密码重置） -->
+  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+  <script>
+    if (window.netlifyIdentity) {
+      window.netlifyIdentity.on("init", function(user) {
+        if (!user) {
+          window.netlifyIdentity.on("login", function() {
+            document.location.href = "/admin/";
+          });
+        }
+      });
+    }
+  </script>
+
   <script src="i18n.js"></script>
   <script type="text/babel" src="app.jsx"></script>
 </body>
