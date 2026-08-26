@@ -2,10 +2,8 @@ backend:
   name: git-gateway
   branch: main
 
-media_folder: "assets/uploads"
+media_folder: "9th-studio-website/assets/uploads"
 public_folder: "/assets/uploads"
-
-publish_mode: editorial_workflow
 
 collections:
   - name: "settings"
@@ -13,7 +11,7 @@ collections:
     files:
       - name: "general"
         label: "基本设置"
-        file: "content/settings.json"
+        file: "9th-studio-website/content/settings.json"
         fields:
           - label: "委托档期状态"
             name: "commission_status"
@@ -38,7 +36,7 @@ collections:
     files:
       - name: "works"
         label: "作品列表"
-        file: "content/works.json"
+        file: "9th-studio-website/content/works.json"
         fields:
           - label: "作品"
             name: "works"
@@ -68,7 +66,7 @@ collections:
     files:
       - name: "pricing"
         label: "价格列表"
-        file: "content/pricing.json"
+        file: "9th-studio-website/content/pricing.json"
         fields:
           - label: "价格项目"
             name: "items"
