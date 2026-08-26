@@ -1,24 +1,9 @@
 const { useState, useEffect, useRef, useCallback } = React;
 
-// ========== 常量配置 ==========
-const LOGO_URL = "https://aka.doubaocdn.com/s/bh4rMtFLu2";
-const AVATAR_URL = "assets/avatar/avatar.gif";
-
-// 委托档期状态: "open" | "full" | "paused"
-const COMMISSION_STATUS = "open";
-
-// 作品数据 - 用户后续可自行添加/修改
-const WORKS_DATA = [
-  { id: 1, category: "vtuber", title: "VTuber Model #1", desc: "Full-body Live2D VTuber model with physics and expressions.", video: "https://aka.doubaocdn.com/s/yxMVuki22U", tech: ["Live2D Cubism", "Physics", "Expressions"] },
-  { id: 2, category: "vtuber", title: "VTuber Model #2", desc: "Half-body VTuber model with detailed hair physics.", video: "https://aka.doubaocdn.com/s/mQRJqSUK5F", tech: ["Live2D Cubism", "Hair Physics"] },
-  { id: 3, category: "vtuber", title: "VTuber Model #3", desc: "Chibi-style VTuber model with cute animations.", video: "https://aka.doubaocdn.com/s/Mzh27633D7", tech: ["Live2D Cubism", "Chibi Rig"] },
-  { id: 4, category: "vtuber", title: "VTuber Model #4", desc: "Cool-style male VTuber model with dynamic poses.", video: "https://aka.doubaocdn.com/s/kPSpx1TVWq", tech: ["Live2D Cubism", "Dynamic Poses"] },
-  { id: 5, category: "vtuber", title: "VTuber Model #5", desc: "Fantasy-themed VTuber model with accessories.", video: "https://aka.doubaocdn.com/s/AYfTwnsvAV", tech: ["Live2D Cubism", "Accessories"] },
-  { id: 6, category: "live2d", title: "Live2D Animation #1", desc: "Smooth Live2D animation showcase with head turns.", video: "https://aka.doubaocdn.com/s/nFqPaykcmV", tech: ["Live2D Animation", "Head Tracking"] },
-  { id: 7, category: "live2d", title: "Live2D Animation #2", desc: "Body movement and breathing animation demo.", video: "https://aka.doubaocdn.com/s/2egKU2qHvI", tech: ["Live2D Animation", "Body Physics"] },
-  { id: 8, category: "live2d", title: "Live2D Animation #3", desc: "Expression and emotion transition showcase.", video: "https://aka.doubaocdn.com/s/yl7vwQpdYs", tech: ["Live2D Animation", "Expressions"] },
-  { id: 9, category: "live2d", title: "Live2D Animation #4", desc: "Hand gestures and interactive motion demo.", video: "https://aka.doubaocdn.com/s/wrz0b50tkZ", tech: ["Live2D Animation", "Hand Motion"] },
-];
+// ========== 默认值 ==========
+const DEFAULT_LOGO_URL = "https://aka.doubaocdn.com/s/bh4rMtFLu2";
+const DEFAULT_AVATAR_URL = "assets/avatar/avatar.gif";
+const DEFAULT_COMMISSION_STATUS = "open";
 
 // ========== 语言切换 ==========
 function useLanguage() {
@@ -27,13 +12,14 @@ function useLanguage() {
     return saved || "zh-TW";
   });
   useEffect(() => { localStorage.setItem("portfolio-lang", lang); document.documentElement.lang = lang; }, [lang]);
-  const t = useCallback((key) => {
-    const keys = key.split(".");
-    let val = I18N[lang];
-    for (const k of keys) { val = val?.[k]; }
-    return val || key;
-  }, [lang]);
-  return { lang, setLang, t };
+  return { lang, setLang };
+}
+
+// ========== 多语言文本辅助函数 ==========
+function getText(field, lang, fallback) {
+  if (!field) return fallback || "";
+  if (typeof field === "string") return field;
+  return field[lang] || field["zh-TW"] || field["en"] || fallback || "";
 }
 
 // ========== 滚动动画 Hook ==========
@@ -53,7 +39,7 @@ function useScrollReveal() {
 }
 
 // ========== 导航栏 ==========
-function Navbar({ lang, setLang, t }) {
+function Navbar({ lang, setLang, siteContent, commissionStatus }) {
   const [scrolled, setScrolled] = useState(false);
   const [langOpen, setLangOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -67,13 +53,14 @@ function Navbar({ lang, setLang, t }) {
     return () => { window.removeEventListener("scroll", onScroll); document.removeEventListener("click", onClick); };
   }, []);
 
+  const nav = siteContent?.nav || {};
   const navItems = [
-    { href: "#about", label: t("nav.about") },
-    { href: "#services", label: t("nav.services") },
-    { href: "#portfolio", label: t("nav.portfolio") },
-    { href: "#process", label: t("nav.process") },
-    { href: "#pricing", label: t("nav.pricing") },
-    { href: "#contact", label: t("nav.contact") },
+    { href: "#about", label: getText(nav.about, lang, "About") },
+    { href: "#services", label: getText(nav.services, lang, "Services") },
+    { href: "#portfolio", label: getText(nav.portfolio, lang, "Works") },
+    { href: "#process", label: getText(nav.process, lang, "Process") },
+    { href: "#pricing", label: getText(nav.pricing, lang, "Pricing") },
+    { href: "#contact", label: getText(nav.contact, lang, "Contact") },
   ];
 
   const languages = [
@@ -85,15 +72,16 @@ function Navbar({ lang, setLang, t }) {
     { code: "es", label: "Español" },
   ];
 
-  const statusClass = COMMISSION_STATUS === "open" ? "status-open" : COMMISSION_STATUS === "full" ? "status-full" : "status-paused";
+  const statusClass = commissionStatus === "open" ? "status-open" : commissionStatus === "full" ? "status-full" : "status-paused";
+  const statusText = getText(siteContent?.commission?.status?.[commissionStatus], lang, commissionStatus);
+  const siteName = siteContent?.site?.name || "9th Studio";
 
   return (
     <>
       <nav className={`nav ${scrolled ? "scrolled" : ""}`}>
         <div className="nav-inner">
           <a href="#hero" className="nav-logo" onClick={() => setMobileOpen(false)}>
-            <img src={LOGO_URL} alt="9th Studio Logo" className="nav-logo-img" />
-            <span>9th Studio</span>
+            <span>{siteName}</span>
           </a>
           <ul className="nav-links">
             {navItems.map((item) => (
@@ -103,7 +91,7 @@ function Navbar({ lang, setLang, t }) {
           <div className="nav-actions">
             <div className={`commission-status ${statusClass}`}>
               <span className="status-dot"></span>
-              <span>{t(`commission.status.${COMMISSION_STATUS}`)}</span>
+              <span>{statusText}</span>
             </div>
             <div className="lang-switcher" ref={langRef}>
               <button className="lang-btn" onClick={() => setLangOpen(!langOpen)}>
@@ -140,35 +128,39 @@ function Navbar({ lang, setLang, t }) {
 }
 
 // ========== Hero ==========
-function Hero({ t }) {
-  const statusClass = COMMISSION_STATUS === "open" ? "status-open" : COMMISSION_STATUS === "full" ? "status-full" : "status-paused";
+function Hero({ lang, siteContent, commissionStatus, avatarUrl }) {
+  const hero = siteContent?.hero || {};
+  const statusClass = commissionStatus === "open" ? "status-open" : commissionStatus === "full" ? "status-full" : "status-paused";
+  const badgeText = getText(siteContent?.commission?.badge?.[commissionStatus], lang, "");
+  const ownerName = siteContent?.site?.owner_name || "Kyuu";
+
   return (
     <section id="hero" className="hero">
       <div className="hero-inner">
         <div className="hero-text">
           <div className={`commission-badge ${statusClass}`}>
             <span className="status-dot"></span>
-            <span>{t(`commission.badge.${COMMISSION_STATUS}`)}</span>
+            <span>{badgeText}</span>
           </div>
-          <div className="hero-greeting">{t("hero.greeting")}</div>
-          <h1 className="hero-name">Kyuu</h1>
-          <div className="hero-subtitle">{t("hero.subtitle")}</div>
+          <div className="hero-greeting">{getText(hero.greeting, lang, "HELLO")}</div>
+          <h1 className="hero-name">{ownerName}</h1>
+          <div className="hero-subtitle">{getText(hero.subtitle, lang, "")}</div>
           <div className="hero-title">
             <span>Live 2D 建模师</span><span className="dot"></span>
             <span>VTuber Modeler</span><span className="dot"></span>
             <span>Illustrator</span>
           </div>
-          <p className="hero-tagline">{t("hero.tagline")}</p>
+          <p className="hero-tagline">{getText(hero.tagline, lang, "")}</p>
           <div className="hero-cta">
-            <a href="#portfolio" className="btn btn-primary">{t("hero.ctaWorks")} →</a>
-            <a href="#contact" className="btn btn-secondary">{t("hero.ctaContact")}</a>
+            <a href="#portfolio" className="btn btn-primary">{getText(hero.cta_works, lang, "View Works")} →</a>
+            <a href="#contact" className="btn btn-secondary">{getText(hero.cta_contact, lang, "Contact")}</a>
           </div>
         </div>
         <div className="hero-visual">
           <div className="avatar-wrapper">
             <div className="avatar-glow"></div>
             <div className="avatar-ring"></div>
-            <div className="avatar-img"><img src={AVATAR_URL} alt="Kyuu avatar" /></div>
+            <div className="avatar-img"><img src={avatarUrl} alt="avatar" /></div>
             <div className="avatar-badge badge-1"><span className="dot"></span>9th Studio</div>
             <div className="avatar-badge badge-2"><span className="dot"></span>@kyu_506</div>
             <div className="avatar-badge badge-3"><span className="dot"></span>Since 2023</div>
@@ -184,39 +176,42 @@ function Hero({ t }) {
 }
 
 // ========== About ==========
-function About({ t }) {
-  const stats = [
-    { value: "10+", label: t("about.stats.models") },
-    { value: "2", label: t("about.stats.collaborators") },
-    { value: "2023", label: t("about.stats.since") },
-    { value: "6", label: t("about.stats.services") },
+function About({ lang, siteContent, avatarUrl }) {
+  const about = siteContent?.about || {};
+  const statsLabels = siteContent?.about_stats_labels || {};
+  const stats = about.stats || [
+    { value: "10+", label_key: "models" },
+    { value: "2", label_key: "collaborators" },
+    { value: "2023", label_key: "since" },
+    { value: "6", label_key: "services" },
   ];
-  const skills = ["Live2D", "VTuber Model", "Character Art", "Illustration", "VTS Accessories", "Emoji Design", "Clip Studio Paint", "Live2D Cubism", "SAI", "Procreate", "VBriger", "shoost", "Vtube Studio", "Pngtuber"];
+  const skills = about.skills || [];
+
   return (
     <section id="about" className="section">
       <div className="section-inner">
         <div className="section-head reveal">
-          <div className="eyebrow">{t("about.eyebrow")}</div>
-          <h2 className="section-title">{t("about.title")}</h2>
-          <p className="section-subtitle">{t("about.subtitle")}</p>
+          <div className="eyebrow">{getText(about.eyebrow, lang, "ABOUT ME")}</div>
+          <h2 className="section-title">{getText(about.title, lang, "About Me")}</h2>
+          <p className="section-subtitle">{getText(about.subtitle, lang, "")}</p>
         </div>
         <div className="about-grid">
           <div className="about-image reveal">
-            <img src={AVATAR_URL} alt="Kyuu" />
+            <img src={avatarUrl} alt="About" />
           </div>
           <div className="about-content">
-            <p className="about-text reveal reveal-delay-1">{t("about.text1")}</p>
-            <p className="about-text reveal reveal-delay-2">{t("about.text2")}</p>
+            <p className="about-text reveal reveal-delay-1">{getText(about.text1, lang, "")}</p>
+            <p className="about-text reveal reveal-delay-2">{getText(about.text2, lang, "")}</p>
             <div className="about-stats reveal reveal-delay-3">
               {stats.map((s, i) => (
                 <div className="stat-card" key={i}>
                   <div className="stat-value">{s.value}</div>
-                  <div className="stat-label">{s.label}</div>
+                  <div className="stat-label">{getText(statsLabels[s.label_key], lang, s.label_key)}</div>
                 </div>
               ))}
             </div>
             <div className="reveal reveal-delay-4">
-              <h3 className="about-skills-title">{t("about.skillsTitle")}</h3>
+              <h3 className="about-skills-title">{getText(about.skills_title, lang, "Skills")}</h3>
               <div className="skills-grid">
                 {skills.map((skill, i) => (<span className="skill-tag" key={i}>{skill}</span>))}
               </div>
@@ -229,29 +224,23 @@ function About({ t }) {
 }
 
 // ========== Services ==========
-function Services({ t }) {
-  const services = [
-    { icon: "🎭", title: t("services.vtuber.title"), desc: t("services.vtuber.desc") },
-    { icon: "✨", title: t("services.live2d.title"), desc: t("services.live2d.desc") },
-    { icon: "🎨", title: t("services.character.title"), desc: t("services.character.desc") },
-    { icon: "🖌️", title: t("services.illustration.title"), desc: t("services.illustration.desc") },
-    { icon: "💎", title: t("services.vts.title"), desc: t("services.vts.desc") },
-    { icon: "😊", title: t("services.emoji.title"), desc: t("services.emoji.desc") },
-  ];
+function Services({ lang, siteContent }) {
+  const labels = siteContent?.section_labels?.services || {};
+  const services = siteContent?.services || [];
   return (
     <section id="services" className="section">
       <div className="section-inner">
         <div className="section-head reveal">
-          <div className="eyebrow">{t("services.eyebrow")}</div>
-          <h2 className="section-title">{t("services.title")}</h2>
-          <p className="section-subtitle">{t("services.subtitle")}</p>
+          <div className="eyebrow">{getText(labels.eyebrow, lang, "SERVICES")}</div>
+          <h2 className="section-title">{getText(labels.title, lang, "Services")}</h2>
+          <p className="section-subtitle">{getText(labels.subtitle, lang, "")}</p>
         </div>
         <div className="services-grid">
           {services.map((s, i) => (
             <div className="service-card reveal reveal-delay-1" key={i} style={{ transitionDelay: `${i * 0.08}s` }}>
-              <div className="service-icon"><span style={{ fontSize: "28px" }}>{s.icon}</span></div>
-              <h3 className="service-title">{s.title}</h3>
-              <p className="service-desc">{s.desc}</p>
+              <div className="service-icon"><span style={{ fontSize: "28px" }}>{s.icon || "✨"}</span></div>
+              <h3 className="service-title">{getText(s.title, lang, "")}</h3>
+              <p className="service-desc">{getText(s.desc, lang, "")}</p>
             </div>
           ))}
         </div>
@@ -261,19 +250,24 @@ function Services({ t }) {
 }
 
 // ========== Portfolio ==========
-function Portfolio({ t }) {
+function Portfolio({ lang, siteContent, worksData }) {
   const [filter, setFilter] = useState("all");
   const [selected, setSelected] = useState(null);
+  const labels = siteContent?.section_labels?.portfolio || {};
+  const filterLabels = siteContent?.portfolio_filter || {};
+  const catLabels = siteContent?.portfolio_categories || {};
+
   const categories = [
-    { id: "all", label: t("portfolio.filter.all") },
-    { id: "vtuber", label: t("portfolio.filter.vtuber") },
-    { id: "live2d", label: t("portfolio.filter.live2d") },
-    { id: "character", label: t("portfolio.filter.character") },
-    { id: "illustration", label: t("portfolio.filter.illustration") },
-    { id: "vts", label: t("portfolio.filter.vts") },
-    { id: "emoji", label: t("portfolio.filter.emoji") },
+    { id: "all", label: getText(filterLabels.all, lang, "All") },
+    { id: "vtuber", label: getText(filterLabels.vtuber, lang, "VTuber") },
+    { id: "live2d", label: getText(filterLabels.live2d, lang, "Live2D") },
+    { id: "character", label: getText(filterLabels.character, lang, "Character") },
+    { id: "illustration", label: getText(filterLabels.illustration, lang, "Illustration") },
+    { id: "vts", label: getText(filterLabels.vts, lang, "VTS") },
+    { id: "emoji", label: getText(filterLabels.emoji, lang, "Emoji") },
   ];
-  const filtered = filter === "all" ? WORKS_DATA : WORKS_DATA.filter((w) => w.category === filter);
+
+  const filtered = filter === "all" ? worksData : worksData.filter((w) => w.category === filter);
 
   useEffect(() => {
     if (selected) { document.body.style.overflow = "hidden"; }
@@ -285,9 +279,9 @@ function Portfolio({ t }) {
     <section id="portfolio" className="section">
       <div className="section-inner">
         <div className="section-head reveal">
-          <div className="eyebrow">{t("portfolio.eyebrow")}</div>
-          <h2 className="section-title">{t("portfolio.title")}</h2>
-          <p className="section-subtitle">{t("portfolio.subtitle")}</p>
+          <div className="eyebrow">{getText(labels.eyebrow, lang, "PORTFOLIO")}</div>
+          <h2 className="section-title">{getText(labels.title, lang, "Portfolio")}</h2>
+          <p className="section-subtitle">{getText(labels.subtitle, lang, "")}</p>
         </div>
         <div className="filter-bar reveal">
           {categories.map((c) => (
@@ -306,10 +300,10 @@ function Portfolio({ t }) {
               <div className="play-btn"><svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg></div>
               <div className="work-overlay">
                 <div className="work-overlay-content">
-                  <div className="work-category">{t(`portfolio.categories.${w.category}`)}</div>
+                  <div className="work-category">{getText(catLabels[w.category], lang, w.category)}</div>
                   <h3 className="work-title">{w.title}</h3>
                   <p className="work-desc">{w.desc}</p>
-                  <span className="work-view">{t("portfolio.view")} →</span>
+                  <span className="work-view">{getText(labels.view, lang, "View")} →</span>
                 </div>
               </div>
             </div>
@@ -324,12 +318,12 @@ function Portfolio({ t }) {
               <video src={selected.video} controls autoPlay loop muted playsInline style={{ width: "100%", height: "100%", objectFit: "contain", background: "#000" }}></video>
             </div>
             <div className="modal-body">
-              <div className="modal-category">{t(`portfolio.categories.${selected.category}`)}</div>
+              <div className="modal-category">{getText(catLabels[selected.category], lang, selected.category)}</div>
               <h2 className="modal-title">{selected.title}</h2>
               <p className="modal-desc">{selected.desc}</p>
-              <div className="modal-tech-title">{t("portfolio.tech")}</div>
+              <div className="modal-tech-title">{getText(labels.tech, lang, "Tech")}</div>
               <div className="modal-tech-tags">
-                {selected.tech.map((tech, i) => (<span className="tech-tag" key={i}>{tech}</span>))}
+                {selected.tech && selected.tech.map((tech, i) => (<span className="tech-tag" key={i}>{tech}</span>))}
               </div>
             </div>
           </div>
@@ -340,28 +334,23 @@ function Portfolio({ t }) {
 }
 
 // ========== Process ==========
-function Process({ t }) {
-  const steps = [
-    { num: "01", title: t("process.step1.title"), desc: t("process.step1.desc") },
-    { num: "02", title: t("process.step2.title"), desc: t("process.step2.desc") },
-    { num: "03", title: t("process.step3.title"), desc: t("process.step3.desc") },
-    { num: "04", title: t("process.step4.title"), desc: t("process.step4.desc") },
-    { num: "05", title: t("process.step5.title"), desc: t("process.step5.desc") },
-  ];
+function Process({ lang, siteContent }) {
+  const labels = siteContent?.section_labels?.process || {};
+  const steps = siteContent?.process || [];
   return (
     <section id="process" className="section">
       <div className="section-inner">
         <div className="section-head reveal">
-          <div className="eyebrow">{t("process.eyebrow")}</div>
-          <h2 className="section-title">{t("process.title")}</h2>
-          <p className="section-subtitle">{t("process.subtitle")}</p>
+          <div className="eyebrow">{getText(labels.eyebrow, lang, "WORKFLOW")}</div>
+          <h2 className="section-title">{getText(labels.title, lang, "Process")}</h2>
+          <p className="section-subtitle">{getText(labels.subtitle, lang, "")}</p>
         </div>
         <div className="process-timeline">
           {steps.map((s, i) => (
             <div className="process-step reveal reveal-delay-1" key={i} style={{ transitionDelay: `${i * 0.1}s` }}>
-              <div className="step-number">{s.num}</div>
-              <h3 className="step-title">{s.title}</h3>
-              <p className="step-desc">{s.desc}</p>
+              <div className="step-number">{s.num || `0${i+1}`}</div>
+              <h3 className="step-title">{getText(s.title, lang, "")}</h3>
+              <p className="step-desc">{getText(s.desc, lang, "")}</p>
             </div>
           ))}
         </div>
@@ -371,64 +360,55 @@ function Process({ t }) {
 }
 
 // ========== Pricing ==========
-function Pricing({ t }) {
-  const items = [
-    { title: t("pricing.vtuber.title"), price: "$500", desc: t("pricing.vtuber.desc") },
-    { title: t("pricing.live2d.title"), price: "$200", desc: t("pricing.live2d.desc") },
-    { title: t("pricing.character.title"), price: "$150", desc: t("pricing.character.desc") },
-    { title: t("pricing.illustration.title"), price: "$80", desc: t("pricing.illustration.desc") },
-    { title: t("pricing.vts.title"), price: "$50", desc: t("pricing.vts.desc") },
-    { title: t("pricing.emoji.title"), price: "$30", desc: t("pricing.emoji.desc") },
-  ];
+function Pricing({ lang, siteContent, pricingData }) {
+  const labels = siteContent?.section_labels?.pricing || {};
   return (
     <section id="pricing" className="section">
       <div className="section-inner">
         <div className="section-head reveal">
-          <div className="eyebrow">{t("pricing.eyebrow")}</div>
-          <h2 className="section-title">{t("pricing.title")}</h2>
-          <p className="section-subtitle">{t("pricing.subtitle")}</p>
+          <div className="eyebrow">{getText(labels.eyebrow, lang, "PRICING")}</div>
+          <h2 className="section-title">{getText(labels.title, lang, "Pricing")}</h2>
+          <p className="section-subtitle">{getText(labels.subtitle, lang, "")}</p>
         </div>
         <div className="pricing-grid">
-          {items.map((item, i) => (
+          {pricingData.map((item, i) => (
             <div className="pricing-card reveal-scale reveal-delay-1" key={i} style={{ transitionDelay: `${(i % 3) * 0.1}s` }}>
               <div className="pricing-card-head">
                 <h3 className="pricing-title">{item.title}</h3>
               </div>
               <div className="pricing-price">
                 <span className="price-value">{item.price}</span>
-                <span className="price-from">{t("pricing.from")}</span>
+                <span className="price-from">{getText(labels.from, lang, "from")}</span>
               </div>
               <p className="pricing-desc">{item.desc}</p>
             </div>
           ))}
         </div>
-        <div className="pricing-note reveal">{t("pricing.note")}</div>
+        <div className="pricing-note reveal">{getText(labels.note, lang, "")}</div>
       </div>
     </section>
   );
 }
 
 // ========== Testimonials ==========
-function Testimonials({ t }) {
-  const items = [
-    { name: "Aoi", role: "VTuber", text: t("testimonials.t1.text"), initial: "A" },
-    { name: "Ren", role: "Streamer", text: t("testimonials.t2.text"), initial: "R" },
-    { name: "Mika", role: "Content Creator", text: t("testimonials.t3.text"), initial: "M" },
-  ];
+function Testimonials({ lang, siteContent }) {
+  const labels = siteContent?.section_labels?.testimonials || {};
+  const items = siteContent?.testimonials || [];
+  const texts = siteContent?.testimonials_text || {};
   return (
     <section id="testimonials" className="section">
       <div className="section-inner">
         <div className="section-head reveal">
-          <div className="eyebrow">{t("testimonials.eyebrow")}</div>
-          <h2 className="section-title">{t("testimonials.title")}</h2>
+          <div className="eyebrow">{getText(labels.eyebrow, lang, "TESTIMONIALS")}</div>
+          <h2 className="section-title">{getText(labels.title, lang, "Reviews")}</h2>
         </div>
         <div className="testimonials-grid">
           {items.map((item, i) => (
             <div className="testimonial-card reveal reveal-delay-1" key={i} style={{ transitionDelay: `${i * 0.1}s` }}>
               <div className="testimonial-quote">"</div>
-              <p className="testimonial-text">{item.text}</p>
+              <p className="testimonial-text">{getText(texts[item.text_key], lang, "")}</p>
               <div className="testimonial-author">
-                <div className="author-avatar">{item.initial}</div>
+                <div className="author-avatar">{item.initial || item.name?.[0] || "?"}</div>
                 <div>
                   <div className="author-name">{item.name}</div>
                   <div className="author-role">{item.role}</div>
@@ -443,69 +423,71 @@ function Testimonials({ t }) {
 }
 
 // ========== Contact ==========
-function Contact({ t }) {
+function Contact({ lang, siteContent, commissionStatus }) {
   const [form, setForm] = useState({ name: "", email: "", type: "", message: "" });
   const [sent, setSent] = useState(false);
-  const statusClass = COMMISSION_STATUS === "open" ? "status-open" : COMMISSION_STATUS === "full" ? "status-full" : "status-paused";
+  const labels = siteContent?.section_labels?.contact || {};
+  const formLabels = labels.form || {};
+  const typeOptions = siteContent?.commission_type_options || {};
+  const contact = siteContent?.contact || {};
+  const statusClass = commissionStatus === "open" ? "status-open" : commissionStatus === "full" ? "status-full" : "status-paused";
+  const statusText = getText(siteContent?.commission?.status?.[commissionStatus], lang, "");
   const handleSubmit = (e) => { e.preventDefault(); setSent(true); setTimeout(() => setSent(false), 4000); setForm({ name: "", email: "", type: "", message: "" }); };
+
   return (
     <section id="contact" className="section">
       <div className="section-inner">
         <div className="section-head reveal">
-          <div className="eyebrow">{t("contact.eyebrow")}</div>
-          <h2 className="section-title">{t("contact.title")}</h2>
-          <p className="section-subtitle">{t("contact.subtitle")}</p>
+          <div className="eyebrow">{getText(labels.eyebrow, lang, "CONTACT")}</div>
+          <h2 className="section-title">{getText(labels.title, lang, "Contact")}</h2>
+          <p className="section-subtitle">{getText(labels.subtitle, lang, "")}</p>
         </div>
         <div className="contact-grid">
           <form className="contact-form reveal" onSubmit={handleSubmit}>
             <div className="form-row">
               <div className="form-group">
-                <label className="form-label">{t("contact.form.name")}</label>
+                <label className="form-label">{getText(formLabels.name, lang, "Name")}</label>
                 <input className="form-input" type="text" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} required />
               </div>
               <div className="form-group">
-                <label className="form-label">{t("contact.form.email")}</label>
+                <label className="form-label">{getText(formLabels.email, lang, "Email")}</label>
                 <input className="form-input" type="email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} required />
               </div>
             </div>
             <div className="form-group">
-              <label className="form-label">{t("contact.form.type")}</label>
+              <label className="form-label">{getText(formLabels.type, lang, "Type")}</label>
               <select className="form-select" value={form.type} onChange={(e) => setForm({ ...form, type: e.target.value })} required>
-                <option value="">{t("contact.form.typePlaceholder")}</option>
-                <option value="vtuber">{t("contact.form.typeVtuber")}</option>
-                <option value="live2d">{t("contact.form.typeLive2d")}</option>
-                <option value="character">{t("contact.form.typeCharacter")}</option>
-                <option value="illustration">{t("contact.form.typeIllustration")}</option>
-                <option value="vts">{t("contact.form.typeVts")}</option>
-                <option value="emoji">{t("contact.form.typeEmoji")}</option>
-                <option value="other">{t("contact.form.typeOther")}</option>
+                <option value="">{getText(formLabels.type_placeholder, lang, "Select")}</option>
+                {Object.keys(typeOptions).map((key) => (
+                  <option key={key} value={key}>{getText(typeOptions[key], lang, key)}</option>
+                ))}
               </select>
             </div>
             <div className="form-group">
-              <label className="form-label">{t("contact.form.message")}</label>
+              <label className="form-label">{getText(formLabels.message, lang, "Message")}</label>
               <textarea className="form-textarea" value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })} required></textarea>
             </div>
-            <button type="submit" className="btn-submit">{sent ? t("contact.form.sent") : t("contact.form.submit")}</button>
+            <button type="submit" className="btn-submit">{sent ? getText(formLabels.sent, lang, "Sent!") : getText(formLabels.submit, lang, "Send")}</button>
           </form>
           <div className="contact-info">
             <div className={`commission-big ${statusClass} reveal`}>
               <span className="status-dot"></span>
               <div>
-                <div className="commission-big-label">{t("contact.statusLabel")}</div>
-                <div className="commission-big-value">{t(`commission.status.${COMMISSION_STATUS}`)}</div>
+                <div className="commission-big-label">{getText(labels.status_label, lang, "Status")}</div>
+                <div className="commission-big-value">{statusText}</div>
               </div>
             </div>
             <div className="contact-item reveal reveal-delay-1">
               <div className="contact-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
-              <div><div className="contact-item-label">{t("contact.emailLabel")}</div><div className="contact-item-value">contact@9thstudio.com</div></div>
+              <div><div className="contact-item-label">{getText(labels.email_label, lang, "Email")}</div><div className="contact-item-value">{contact.email || "contact@9thstudio.com"}</div></div>
             </div>
             <div className="contact-item reveal reveal-delay-2">
               <div className="contact-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div>
-              <div><div className="contact-item-label">{t("contact.discordLabel")}</div><div className="contact-item-value">@kyu_506</div></div>
+              <div><div className="contact-item-label">{getText(labels.discord_label, lang, "Discord")}</div><div className="contact-item-value">{contact.discord || "@kyu_506"}</div></div>
             </div>
             <div className="contact-item reveal reveal-delay-3">
               <div className="contact-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg></div>
-              <div><div className="contact-item-label">{t("contact.socialLabel")}</div><div className="contact-item-value">@kyu_506</div></div>
+              <div><div className="contact-item-label">{getText(labels.social_label, lang, "Social")}</div><div className="contact-item-value">{contact.social || "@kyu_506"}</div></div>
             </div>
           </div>
         </div>
@@ -515,17 +497,21 @@ function Contact({ t }) {
 }
 
 // ========== Footer ==========
-function Footer({ t }) {
+function Footer({ lang, siteContent }) {
+  const footer = siteContent?.footer || {};
+  const nav = siteContent?.nav || {};
+  const services = siteContent?.services || [];
+  const siteName = siteContent?.site?.name || "9th Studio";
+
   return (
     <footer className="footer">
       <div className="footer-inner">
         <div className="footer-top">
           <div className="footer-brand">
             <div className="footer-logo">
-              <img src={LOGO_URL} alt="9th Studio Logo" className="footer-logo-img" />
-              <span>9th Studio</span>
+              <span>{siteName}</span>
             </div>
-            <p className="footer-tagline">{t("footer.tagline")}</p>
+            <p className="footer-tagline">{getText(footer.tagline, lang, "")}</p>
             <div className="footer-social">
               <a href="#" className="social-icon" aria-label="Twitter"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"/></svg></a>
               <a href="#" className="social-icon" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg></a>
@@ -534,39 +520,103 @@ function Footer({ t }) {
             </div>
           </div>
           <div className="footer-col">
-            <h4>{t("footer.navTitle")}</h4>
+            <h4>{getText(footer.nav_title, lang, "Navigation")}</h4>
             <ul>
-              <li><a href="#about">{t("nav.about")}</a></li>
-              <li><a href="#services">{t("nav.services")}</a></li>
-              <li><a href="#portfolio">{t("nav.portfolio")}</a></li>
-              <li><a href="#pricing">{t("nav.pricing")}</a></li>
-              <li><a href="#contact">{t("nav.contact")}</a></li>
+              <li><a href="#about">{getText(nav.about, lang, "About")}</a></li>
+              <li><a href="#services">{getText(nav.services, lang, "Services")}</a></li>
+              <li><a href="#portfolio">{getText(nav.portfolio, lang, "Works")}</a></li>
+              <li><a href="#pricing">{getText(nav.pricing, lang, "Pricing")}</a></li>
+              <li><a href="#contact">{getText(nav.contact, lang, "Contact")}</a></li>
             </ul>
           </div>
           <div className="footer-col">
-            <h4>{t("footer.servicesTitle")}</h4>
+            <h4>{getText(footer.services_title, lang, "Services")}</h4>
             <ul>
-              <li><a href="#services">{t("services.vtuber.title")}</a></li>
-              <li><a href="#services">{t("services.live2d.title")}</a></li>
-              <li><a href="#services">{t("services.character.title")}</a></li>
-              <li><a href="#services">{t("services.illustration.title")}</a></li>
-              <li><a href="#services">{t("services.vts.title")}</a></li>
+              {services.slice(0, 5).map((s, i) => (
+                <li key={i}><a href="#services">{getText(s.title, lang, "")}</a></li>
+              ))}
             </ul>
           </div>
         </div>
         <div className="footer-bottom">
-          <div className="footer-copyright">© 2026 9th Studio. {t("footer.rights")}</div>
-          <div className="footer-copyright">{t("footer.made")}</div>
+          <div className="footer-copyright">© 2026 {siteName}. {getText(footer.rights, lang, "All rights reserved.")}</div>
+          <div className="footer-copyright">{getText(footer.made, lang, "Made with ♥")}</div>
         </div>
       </div>
     </footer>
   );
 }
 
+// ========== 悬浮编辑按钮 ==========
+function FloatingEditButton() {
+  return (
+    <a href="/admin/" target="_blank" rel="noopener noreferrer" style={{
+      position: "fixed", bottom: "24px", right: "24px", zIndex: "9999",
+      width: "52px", height: "52px", borderRadius: "50%",
+      background: "linear-gradient(135deg, #b967ff, #ff6ec7)",
+      color: "#fff", display: "flex", alignItems: "center", justifyContent: "center",
+      boxShadow: "0 4px 20px rgba(185,103,255,0.4)", cursor: "pointer",
+      textDecoration: "none", fontSize: "22px", transition: "transform 0.2s ease",
+    }} onMouseEnter={(e) => e.currentTarget.style.transform = "scale(1.1)"}
+       onMouseLeave={(e) => e.currentTarget.style.transform = "scale(1)"}
+       title="编辑内容">
+      ✏️
+    </a>
+  );
+}
+
 // ========== App ==========
 function App() {
-  const { lang, setLang, t } = useLanguage();
+  const { lang, setLang } = useLanguage();
   useScrollReveal();
+
+  const [siteData, setSiteData] = useState({
+    loading: true,
+    settings: { commission_status: DEFAULT_COMMISSION_STATUS, logo_url: "", avatar_url: "" },
+    works: [],
+    pricing: [],
+    siteContent: {},
+  });
+
+  useEffect(() => {
+    let cancelled = false;
+    async function loadData() {
+      try {
+        const [settingsRes, worksRes, pricingRes, contentRes] = await Promise.all([
+          fetch("content/settings.json").then(r => r.json()).catch(() => ({})),
+          fetch("content/works.json").then(r => r.json()).catch(() => ({ works: [] })),
+          fetch("content/pricing.json").then(r => r.json()).catch(() => ({ items: [] })),
+          fetch("content/site-content.json").then(r => r.json()).catch(() => ({})),
+        ]);
+        if (!cancelled) {
+          setSiteData({
+            loading: false,
+            settings: { commission_status: DEFAULT_COMMISSION_STATUS, logo_url: "", avatar_url: "", ...settingsRes },
+            works: worksRes.works || [],
+            pricing: pricingRes.items || [],
+            siteContent: contentRes || {},
+          });
+        }
+      } catch (e) {
+        if (!cancelled) setSiteData(prev => ({ ...prev, loading: false }));
+      }
+    }
+    loadData();
+    return () => { cancelled = true; };
+  }, []);
+
+  const commissionStatus = siteData.settings.commission_status || DEFAULT_COMMISSION_STATUS;
+  const logoUrl = siteData.settings.logo_url || DEFAULT_LOGO_URL;
+  const avatarUrl = siteData.settings.avatar_url || DEFAULT_AVATAR_URL;
+
+  if (siteData.loading) {
+    return (
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "center", height: "100vh", color: "#8a84a8", fontFamily: "system-ui, sans-serif" }}>
+        Loading...
+      </div>
+    );
+  }
+
   return (
     <div className="app-container">
       <div className="bg-ambient">
@@ -575,16 +625,17 @@ function App() {
         <div className="bg-stars layer-3"></div>
         <div className="bg-grid"></div>
       </div>
-      <Navbar lang={lang} setLang={setLang} t={t} />
-      <Hero t={t} />
-      <About t={t} />
-      <Services t={t} />
-      <Portfolio t={t} />
-      <Process t={t} />
-      <Pricing t={t} />
-      <Testimonials t={t} />
-      <Contact t={t} />
-      <Footer t={t} />
+      <Navbar lang={lang} setLang={setLang} siteContent={siteData.siteContent} commissionStatus={commissionStatus} />
+      <Hero lang={lang} siteContent={siteData.siteContent} commissionStatus={commissionStatus} avatarUrl={avatarUrl} />
+      <About lang={lang} siteContent={siteData.siteContent} avatarUrl={avatarUrl} />
+      <Services lang={lang} siteContent={siteData.siteContent} />
+      <Portfolio lang={lang} siteContent={siteData.siteContent} worksData={siteData.works} />
+      <Process lang={lang} siteContent={siteData.siteContent} />
+      <Pricing lang={lang} siteContent={siteData.siteContent} pricingData={siteData.pricing} />
+      <Testimonials lang={lang} siteContent={siteData.siteContent} />
+      <Contact lang={lang} siteContent={siteData.siteContent} commissionStatus={commissionStatus} />
+      <Footer lang={lang} siteContent={siteData.siteContent} />
+      <FloatingEditButton />
     </div>
   );
 }

@@ -1,0 +1,360 @@
+backend:
+  name: git-gateway
+  branch: main
+
+media_folder: "9th-studio-website/assets/uploads"
+public_folder: "/assets/uploads"
+
+collections:
+  - name: "settings"
+    label: "网站设置"
+    files:
+      - name: "general"
+        label: "基本设置"
+        file: "9th-studio-website/content/settings.json"
+        fields:
+          - label: "委托档期状态"
+            name: "commission_status"
+            widget: "select"
+            options:
+              - { label: "开放委托", value: "open" }
+              - { label: "额满", value: "full" }
+              - { label: "暂停", value: "paused" }
+          - label: "Logo 图片链接"
+            name: "logo_url"
+            widget: "string"
+            required: false
+            hint: "留空则使用默认 Logo"
+          - label: "头像图片链接"
+            name: "avatar_url"
+            widget: "string"
+            required: false
+            hint: "留空则使用默认头像"
+
+  - name: "works"
+    label: "作品展示"
+    files:
+      - name: "works"
+        label: "作品列表"
+        file: "9th-studio-website/content/works.json"
+        fields:
+          - label: "作品"
+            name: "works"
+            widget: "list"
+            fields:
+              - { label: "标题", name: "title", widget: "string" }
+              - label: "分类"
+                name: "category"
+                widget: "select"
+                options:
+                  - { label: "VTuber 皮套", value: "vtuber" }
+                  - { label: "Live2D 动画", value: "live2d" }
+                  - { label: "角色立绘", value: "character" }
+                  - { label: "插画", value: "illustration" }
+                  - { label: "VTS 挂件", value: "vts" }
+                  - { label: "表情包", value: "emoji" }
+              - { label: "描述", name: "desc", widget: "text" }
+              - { label: "视频链接", name: "video", widget: "string", hint: "mp4 视频的 URL 地址" }
+              - label: "使用技术"
+                name: "tech"
+                widget: "list"
+                required: false
+                field: { label: "技术名称", name: "tech", widget: "string" }
+
+  - name: "pricing"
+    label: "价目表"
+    files:
+      - name: "pricing"
+        label: "价格列表"
+        file: "9th-studio-website/content/pricing.json"
+        fields:
+          - label: "价格项目"
+            name: "items"
+            widget: "list"
+            fields:
+              - { label: "服务名称", name: "title", widget: "string" }
+              - { label: "价格", name: "price", widget: "string", hint: "如 $500 或 面议" }
+              - { label: "描述", name: "desc", widget: "text" }
+
+  - name: "site-content"
+    label: "全站文字内容"
+    files:
+      - name: "site-content"
+        label: "全站内容编辑"
+        file: "9th-studio-website/content/site-content.json"
+        fields:
+          - label: "基本信息"
+            name: "site"
+            widget: "object"
+            fields:
+              - { label: "工作室名称", name: "name", widget: "string" }
+              - { label: "创作者名字", name: "owner_name", widget: "string" }
+
+          - label: "首页内容"
+            name: "hero"
+            widget: "object"
+            fields:
+              - label: "问候语"
+                name: "greeting"
+                widget: "object"
+                fields:
+                  - { label: "繁體中文", name: "zh-TW", widget: "string" }
+                  - { label: "简体中文", name: "zh-CN", widget: "string" }
+                  - { label: "English", name: "en", widget: "string" }
+                  - { label: "日本語", name: "ja", widget: "string" }
+                  - { label: "한국어", name: "ko", widget: "string" }
+                  - { label: "Español", name: "es", widget: "string" }
+              - label: "副标题"
+                name: "subtitle"
+                widget: "object"
+                fields:
+                  - { label: "繁體中文", name: "zh-TW", widget: "string" }
+                  - { label: "简体中文", name: "zh-CN", widget: "string" }
+                  - { label: "English", name: "en", widget: "string" }
+                  - { label: "日本語", name: "ja", widget: "string" }
+                  - { label: "한국어", name: "ko", widget: "string" }
+                  - { label: "Español", name: "es", widget: "string" }
+              - label: "标语"
+                name: "tagline"
+                widget: "object"
+                fields:
+                  - { label: "繁體中文", name: "zh-TW", widget: "text" }
+                  - { label: "简体中文", name: "zh-CN", widget: "text" }
+                  - { label: "English", name: "en", widget: "text" }
+                  - { label: "日本語", name: "ja", widget: "text" }
+                  - { label: "한국어", name: "ko", widget: "text" }
+                  - { label: "Español", name: "es", widget: "text" }
+              - label: "查看作品按钮"
+                name: "cta_works"
+                widget: "object"
+                fields:
+                  - { label: "繁體中文", name: "zh-TW", widget: "string" }
+                  - { label: "简体中文", name: "zh-CN", widget: "string" }
+                  - { label: "English", name: "en", widget: "string" }
+                  - { label: "日本語", name: "ja", widget: "string" }
+                  - { label: "한국어", name: "ko", widget: "string" }
+                  - { label: "Español", name: "es", widget: "string" }
+              - label: "联系委托按钮"
+                name: "cta_contact"
+                widget: "object"
+                fields:
+                  - { label: "繁體中文", name: "zh-TW", widget: "string" }
+                  - { label: "简体中文", name: "zh-CN", widget: "string" }
+                  - { label: "English", name: "en", widget: "string" }
+                  - { label: "日本語", name: "ja", widget: "string" }
+                  - { label: "한국어", name: "ko", widget: "string" }
+                  - { label: "Español", name: "es", widget: "string" }
+
+          - label: "关于我内容"
+            name: "about"
+            widget: "object"
+            fields:
+              - label: "标题"
+                name: "title"
+                widget: "object"
+                fields:
+                  - { label: "繁體中文", name: "zh-TW", widget: "string" }
+                  - { label: "简体中文", name: "zh-CN", widget: "string" }
+                  - { label: "English", name: "en", widget: "string" }
+                  - { label: "日本語", name: "ja", widget: "string" }
+                  - { label: "한국어", name: "ko", widget: "string" }
+                  - { label: "Español", name: "es", widget: "string" }
+              - label: "副标题"
+                name: "subtitle"
+                widget: "object"
+                fields:
+                  - { label: "繁體中文", name: "zh-TW", widget: "string" }
+                  - { label: "简体中文", name: "zh-CN", widget: "string" }
+                  - { label: "English", name: "en", widget: "string" }
+                  - { label: "日本語", name: "ja", widget: "string" }
+                  - { label: "한국어", name: "ko", widget: "string" }
+                  - { label: "Español", name: "es", widget: "string" }
+              - label: "自我介绍第一段"
+                name: "text1"
+                widget: "object"
+                fields:
+                  - { label: "繁體中文", name: "zh-TW", widget: "text" }
+                  - { label: "简体中文", name: "zh-CN", widget: "text" }
+                  - { label: "English", name: "en", widget: "text" }
+                  - { label: "日本語", name: "ja", widget: "text" }
+                  - { label: "한국어", name: "ko", widget: "text" }
+                  - { label: "Español", name: "es", widget: "text" }
+              - label: "自我介绍第二段"
+                name: "text2"
+                widget: "object"
+                fields:
+                  - { label: "繁體中文", name: "zh-TW", widget: "text" }
+                  - { label: "简体中文", name: "zh-CN", widget: "text" }
+                  - { label: "English", name: "en", widget: "text" }
+                  - { label: "日本語", name: "ja", widget: "text" }
+                  - { label: "한국어", name: "ko", widget: "text" }
+                  - { label: "Español", name: "es", widget: "text" }
+              - label: "技能标签"
+                name: "skills"
+                widget: "list"
+                field: { label: "技能", name: "skill", widget: "string" }
+              - label: "统计数据"
+                name: "stats"
+                widget: "list"
+                fields:
+                  - { label: "数值", name: "value", widget: "string" }
+                  - { label: "标签键名(models/collaborators/since/services)", name: "label_key", widget: "string" }
+
+          - label: "服务项目"
+            name: "services"
+            widget: "list"
+            fields:
+              - { label: "图标(emoji)", name: "icon", widget: "string" }
+              - label: "标题"
+                name: "title"
+                widget: "object"
+                fields:
+                  - { label: "繁體中文", name: "zh-TW", widget: "string" }
+                  - { label: "简体中文", name: "zh-CN", widget: "string" }
+                  - { label: "English", name: "en", widget: "string" }
+                  - { label: "日本語", name: "ja", widget: "string" }
+                  - { label: "한국어", name: "ko", widget: "string" }
+                  - { label: "Español", name: "es", widget: "string" }
+              - label: "描述"
+                name: "desc"
+                widget: "object"
+                fields:
+                  - { label: "繁體中文", name: "zh-TW", widget: "text" }
+                  - { label: "简体中文", name: "zh-CN", widget: "text" }
+                  - { label: "English", name: "en", widget: "text" }
+                  - { label: "日本語", name: "ja", widget: "text" }
+                  - { label: "한국어", name: "ko", widget: "text" }
+                  - { label: "Español", name: "es", widget: "text" }
+
+          - label: "委托流程"
+            name: "process"
+            widget: "list"
+            fields:
+              - { label: "步骤编号(如01)", name: "num", widget: "string" }
+              - label: "标题"
+                name: "title"
+                widget: "object"
+                fields:
+                  - { label: "繁體中文", name: "zh-TW", widget: "string" }
+                  - { label: "简体中文", name: "zh-CN", widget: "string" }
+                  - { label: "English", name: "en", widget: "string" }
+                  - { label: "日本語", name: "ja", widget: "string" }
+                  - { label: "한국어", name: "ko", widget: "string" }
+                  - { label: "Español", name: "es", widget: "string" }
+              - label: "描述"
+                name: "desc"
+                widget: "object"
+                fields:
+                  - { label: "繁體中文", name: "zh-TW", widget: "text" }
+                  - { label: "简体中文", name: "zh-CN", widget: "text" }
+                  - { label: "English", name: "en", widget: "text" }
+                  - { label: "日本語", name: "ja", widget: "text" }
+                  - { label: "한국어", name: "ko", widget: "text" }
+                  - { label: "Español", name: "es", widget: "text" }
+
+          - label: "客户评价"
+            name: "testimonials"
+            widget: "list"
+            fields:
+              - { label: "名字", name: "name", widget: "string" }
+              - { label: "角色", name: "role", widget: "string" }
+              - { label: "头像首字母", name: "initial", widget: "string" }
+              - { label: "评价文本键名(t1/t2/t3)", name: "text_key", widget: "string" }
+
+          - label: "客户评价文本"
+            name: "testimonials_text"
+            widget: "object"
+            fields:
+              - label: "评价1"
+                name: "t1"
+                widget: "object"
+                fields:
+                  - { label: "繁體中文", name: "zh-TW", widget: "text" }
+                  - { label: "简体中文", name: "zh-CN", widget: "text" }
+                  - { label: "English", name: "en", widget: "text" }
+                  - { label: "日本語", name: "ja", widget: "text" }
+                  - { label: "한국어", name: "ko", widget: "text" }
+                  - { label: "Español", name: "es", widget: "text" }
+              - label: "评价2"
+                name: "t2"
+                widget: "object"
+                fields:
+                  - { label: "繁體中文", name: "zh-TW", widget: "text" }
+                  - { label: "简体中文", name: "zh-CN", widget: "text" }
+                  - { label: "English", name: "en", widget: "text" }
+                  - { label: "日本語", name: "ja", widget: "text" }
+                  - { label: "한국어", name: "ko", widget: "text" }
+                  - { label: "Español", name: "es", widget: "text" }
+              - label: "评价3"
+                name: "t3"
+                widget: "object"
+                fields:
+                  - { label: "繁體中文", name: "zh-TW", widget: "text" }
+                  - { label: "简体中文", name: "zh-CN", widget: "text" }
+                  - { label: "English", name: "en", widget: "text" }
+                  - { label: "日本語", name: "ja", widget: "text" }
+                  - { label: "한국어", name: "ko", widget: "text" }
+                  - { label: "Español", name: "es", widget: "text" }
+
+          - label: "联系方式"
+            name: "contact"
+            widget: "object"
+            fields:
+              - { label: "邮箱", name: "email", widget: "string" }
+              - { label: "Discord", name: "discord", widget: "string" }
+              - { label: "社交媒体", name: "social", widget: "string" }
+
+          - label: "页脚内容"
+            name: "footer"
+            widget: "object"
+            fields:
+              - label: "标语"
+                name: "tagline"
+                widget: "object"
+                fields:
+                  - { label: "繁體中文", name: "zh-TW", widget: "text" }
+                  - { label: "简体中文", name: "zh-CN", widget: "text" }
+                  - { label: "English", name: "en", widget: "text" }
+                  - { label: "日本語", name: "ja", widget: "text" }
+                  - { label: "한국어", name: "ko", widget: "text" }
+                  - { label: "Español", name: "es", widget: "text" }
+              - label: "导航标题"
+                name: "nav_title"
+                widget: "object"
+                fields:
+                  - { label: "繁體中文", name: "zh-TW", widget: "string" }
+                  - { label: "简体中文", name: "zh-CN", widget: "string" }
+                  - { label: "English", name: "en", widget: "string" }
+                  - { label: "日本語", name: "ja", widget: "string" }
+                  - { label: "한국어", name: "ko", widget: "string" }
+                  - { label: "Español", name: "es", widget: "string" }
+              - label: "服务标题"
+                name: "services_title"
+                widget: "object"
+                fields:
+                  - { label: "繁體中文", name: "zh-TW", widget: "string" }
+                  - { label: "简体中文", name: "zh-CN", widget: "string" }
+                  - { label: "English", name: "en", widget: "string" }
+                  - { label: "日本語", name: "ja", widget: "string" }
+                  - { label: "한국어", name: "ko", widget: "string" }
+                  - { label: "Español", name: "es", widget: "string" }
+              - label: "版权文字"
+                name: "rights"
+                widget: "object"
+                fields:
+                  - { label: "繁體中文", name: "zh-TW", widget: "string" }
+                  - { label: "简体中文", name: "zh-CN", widget: "string" }
+                  - { label: "English", name: "en", widget: "string" }
+                  - { label: "日本語", name: "ja", widget: "string" }
+                  - { label: "한국어", name: "ko", widget: "string" }
+                  - { label: "Español", name: "es", widget: "string" }
+              - label: "制作文字"
+                name: "made"
+                widget: "object"
+                fields:
+                  - { label: "繁體中文", name: "zh-TW", widget: "string" }
+                  - { label: "简体中文", name: "zh-CN", widget: "string" }
+                  - { label: "English", name: "en", widget: "string" }
+                  - { label: "日本語", name: "ja", widget: "string" }
+                  - { label: "한국어", name: "ko", widget: "string" }
+                  - { label: "Español", name: "es", widget: "string" }
