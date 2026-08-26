@@ -1,0 +1,79 @@
+backend:
+  name: git-gateway
+  branch: main
+
+media_folder: "assets/uploads"
+public_folder: "/assets/uploads"
+
+publish_mode: editorial_workflow
+
+collections:
+  - name: "settings"
+    label: "网站设置"
+    files:
+      - name: "general"
+        label: "基本设置"
+        file: "content/settings.json"
+        fields:
+          - label: "委托档期状态"
+            name: "commission_status"
+            widget: "select"
+            options:
+              - { label: "开放委托", value: "open" }
+              - { label: "额满", value: "full" }
+              - { label: "暂停", value: "paused" }
+          - label: "Logo 图片链接"
+            name: "logo_url"
+            widget: "string"
+            required: false
+            hint: "留空则使用默认 Logo"
+          - label: "头像图片链接"
+            name: "avatar_url"
+            widget: "string"
+            required: false
+            hint: "留空则使用默认头像"
+
+  - name: "works"
+    label: "作品展示"
+    files:
+      - name: "works"
+        label: "作品列表"
+        file: "content/works.json"
+        fields:
+          - label: "作品"
+            name: "works"
+            widget: "list"
+            fields:
+              - { label: "标题", name: "title", widget: "string" }
+              - label: "分类"
+                name: "category"
+                widget: "select"
+                options:
+                  - { label: "VTuber 皮套", value: "vtuber" }
+                  - { label: "Live2D 动画", value: "live2d" }
+                  - { label: "角色立绘", value: "character" }
+                  - { label: "插画", value: "illustration" }
+                  - { label: "VTS 挂件", value: "vts" }
+                  - { label: "表情包", value: "emoji" }
+              - { label: "描述", name: "desc", widget: "text" }
+              - { label: "视频链接", name: "video", widget: "string", hint: "mp4 视频的 URL 地址" }
+              - label: "使用技术"
+                name: "tech"
+                widget: "list"
+                required: false
+                field: { label: "技术名称", name: "tech", widget: "string" }
+
+  - name: "pricing"
+    label: "价目表"
+    files:
+      - name: "pricing"
+        label: "价格列表"
+        file: "content/pricing.json"
+        fields:
+          - label: "价格项目"
+            name: "items"
+            widget: "list"
+            fields:
+              - { label: "服务名称", name: "title", widget: "string" }
+              - { label: "价格", name: "price", widget: "string", hint: "如 $500 或 面议" }
+              - { label: "描述", name: "desc", widget: "text" }
