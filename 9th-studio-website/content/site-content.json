@@ -1,0 +1,406 @@
+{
+  "site": {
+    "name": "9th Studio",
+    "owner_name": "Kyuu"
+  },
+  "hero": {
+    "greeting": {
+      "zh-TW": "HELLO, I'M KYUU",
+      "zh-CN": "HELLO, I'M KYUU",
+      "en": "HELLO, I'M KYUU",
+      "ja": "HELLO, I'M KYUU",
+      "ko": "HELLO, I'M KYUU",
+      "es": "HOLA, SOY KYUU"
+    },
+    "subtitle": {
+      "zh-TW": "9th Studio 主理人",
+      "zh-CN": "9th Studio 主理人",
+      "en": "Founder of 9th Studio",
+      "ja": "9th Studio 主宰",
+      "ko": "9th Studio 대표",
+      "es": "Fundadora de 9th Studio"
+    },
+    "tagline": {
+      "zh-TW": "專注於 VTuber 皮套訂製、Live2D 動畫與角色插畫創作。以細膩的動態與用心的設計，為每位客戶打造獨一無二的虛擬形象。",
+      "zh-CN": "专注于 VTuber 皮套订制、Live2D 动画与角色插画创作。以细腻的动态与用心的设计，为每位客户打造独一无二的虚拟形象。",
+      "en": "Specializing in VTuber model creation, Live2D animation, and character illustration. Crafting unique virtual avatars with delicate motion and thoughtful design.",
+      "ja": "VTuberモデル制作、Live2Dアニメーション、キャラクターイラストを専門としています。繊細な動きと丁寧なデザインで、お一人おひとりに特別なバーチャルアバターをお届けします。",
+      "ko": "VTuber 모델 제작, Live2D 애니메이션, 캐릭터 일러스트를 전문으로 합니다. 섬세한 움직임과 정성어린 디자인으로 모든 클라이언트에게 특별한 버추얼 아바타를 선보입니다.",
+      "es": "Especializada en creación de modelos VTuber, animación Live2D e ilustración de personajes. Creando avatares virtuales únicos con movimiento delicado y diseño cuidado."
+    },
+    "cta_works": {
+      "zh-TW": "查看作品",
+      "zh-CN": "查看作品",
+      "en": "View Works",
+      "ja": "作品を見る",
+      "ko": "작품 보기",
+      "es": "Ver Trabajos"
+    },
+    "cta_contact": {
+      "zh-TW": "聯絡委託",
+      "zh-CN": "联络委托",
+      "en": "Get in Touch",
+      "ja": "依頼する",
+      "ko": "의뢰 문의",
+      "es": "Contactar"
+    }
+  },
+  "about": {
+    "eyebrow": {
+      "zh-TW": "ABOUT ME", "zh-CN": "ABOUT ME", "en": "ABOUT ME", "ja": "ABOUT ME", "ko": "ABOUT ME", "es": "SOBRE MÍ"
+    },
+    "title": {
+      "zh-TW": "關於我", "zh-CN": "关于我", "en": "About Me", "ja": "プロフィール", "ko": "소개", "es": "Sobre mí"
+    },
+    "subtitle": {
+      "zh-TW": "一位熱愛虛擬形象創作的 Live2D 建模師",
+      "zh-CN": "一位热爱虚拟形象创作的 Live2D 建模师",
+      "en": "A Live2D modeler passionate about virtual avatar creation",
+      "ja": "バーチャルアバター制作を愛するLive2Dモデラー",
+      "ko": "버추얼 아바타 제작을 사랑하는 Live2D 모델러",
+      "es": "Una modeladora Live2D apasionada por la creación de avatares virtuales"
+    },
+    "text1": {
+      "zh-TW": "你好，我是 Kyuu，9th Studio 的創作者。自 2023 年開始接單以來，一直專注於 VTuber 皮套製作與 Live2D 動畫領域。",
+      "zh-CN": "你好，我是 Kyuu，9th Studio 的创作者。自 2023 年开始接单以来，一直专注于 VTuber 皮套制作与 Live2D 动画领域。",
+      "en": "Hi, I'm Kyuu, the creator behind 9th Studio. I've been taking commissions since 2023, focusing on VTuber model production and Live2D animation.",
+      "ja": "はじめまして、Kyuuです。9th Studioのクリエイターとして、2023年からVTuberモデル制作とLive2Dアニメーションの分野で活動しています。",
+      "ko": "안녕하세요, 9th Studio의 크리에이터 Kyuu입니다. 2023년부터 의뢰를 받기 시작하여 VTuber 모델 제작과 Live2D 애니메이션 분야에서 활동하고 있습니다.",
+      "es": "Hola, soy Kyuu, la creadora de 9th Studio. He estado aceptando comisiones desde 2023, enfocándome en la producción de modelos VTuber y animación Live2D."
+    },
+    "text2": {
+      "zh-TW": "我相信每一個虛擬形象都承載著创作者的心意，因此在製作過程中總是力求細節完美，從角色設計到動態調整，都希望能呈現出最自然、最有生命力的效果。目前工作室有 2 位合作創作者，已完成約 10 件建模作品。",
+      "zh-CN": "我相信每一个虚拟形象都承载着创作者的心意，因此在制作过程中总是力求细节完美，从角色设计到动态调整，都希望能呈现出最自然、最有生命力的效果。目前工作室有 2 位合作创作者，已完成约 10 件建模作品。",
+      "en": "I believe every virtual avatar carries the creator's heart, so I always strive for perfection in details — from character design to motion tuning, aiming for the most natural and lively results. Our studio currently has 2 collaborating creators and has completed around 10 modeling projects.",
+      "ja": "すべてのバーチャルアバターにはクリエイターの想いが込められていると信じています。キャラクターデザインから動きの調整まで、最も自然で生き生きとした表現を目指して、細部まで丁寧に制作しています。現在スタジオには2名のコラボクリエイターが在籍し、約10件のモデリング作品を完成させています。",
+      "ko": "모든 버추얼 아바타에는 크리에이터의 마음이 담겨 있다고 믿습니다. 캐릭터 디자인부터 모션 튜닝까지 가장 자연스럽고 생동감 있는 결과를 목표로 세심하게 제작합니다. 현재 스튜디오에는 2명의 협업 크리에이터가 있으며, 약 10건의 모델링 작품을 완성했습니다.",
+      "es": "Creo que cada avatar virtual lleva el corazón del creador, por lo que siempre busco la perfección en los detalles — desde el diseño del personaje hasta el ajuste de movimiento, aspirando a los resultados más naturales y vivos. Nuestro estudio actualmente tiene 2 creadores colaboradores y ha completado alrededor de 10 proyectos de modelado."
+    },
+    "skills_title": {
+      "zh-TW": "擅長技能", "zh-CN": "擅长技能", "en": "Skills", "ja": "スキル", "ko": "보유 스킬", "es": "Habilidades"
+    },
+    "stats": [
+      { "value": "10+", "label_key": "models" },
+      { "value": "2", "label_key": "collaborators" },
+      { "value": "2023", "label_key": "since" },
+      { "value": "6", "label_key": "services" }
+    ],
+    "skills": ["Live2D", "VTuber Model", "Character Art", "Illustration", "VTS Accessories", "Emoji Design", "Clip Studio Paint", "Live2D Cubism", "SAI", "Procreate", "VBriger", "shoost", "Vtube Studio", "Pngtuber"]
+  },
+  "services": [
+    {
+      "icon": "🎭",
+      "title": {
+        "zh-TW": "VTuber 皮套訂製", "zh-CN": "VTuber 皮套订制", "en": "VTuber Model", "ja": "VTuberモデル制作", "ko": "VTuber 모델 제작", "es": "Modelo VTuber"
+      },
+      "desc": {
+        "zh-TW": "從原畫到建模的完整 VTuber 皮套製作，包含身體、頭部、表情與物理效果。",
+        "zh-CN": "从原画到建模的完整 VTuber 皮套制作，包含身体、头部、表情与物理效果。",
+        "en": "Full VTuber model production from illustration to rigging, including body, head, expressions, and physics.",
+        "ja": "イラストからリギングまでの完全VTuberモデル制作。体、頭、表情、物理演算を含みます。",
+        "ko": "일러스트부터 리깅까지의 완성형 VTuber 모델 제작. 신체, 머리, 표정, 물리 효과를 포함합니다.",
+        "es": "Producción completa de modelo VTuber desde ilustración hasta rigging, incluyendo cuerpo, cabeza, expresiones y física."
+      }
+    },
+    {
+      "icon": "✨",
+      "title": {
+        "zh-TW": "Live2D 動畫製作", "zh-CN": "Live2D 动画制作", "en": "Live2D Animation", "ja": "Live2Dアニメーション", "ko": "Live2D 애니메이션", "es": "Animación Live2D"
+      },
+      "desc": {
+        "zh-TW": "專業 Live2D 動態製作，包含頭部追蹤、身體動作、手部動作與表情切換。",
+        "zh-CN": "专业 Live2D 动态制作，包含头部追踪、身体动作、手部动作与表情切换。",
+        "en": "Professional Live2D motion production including head tracking, body movement, hand gestures, and expression transitions.",
+        "ja": "プロフェッショナルなLive2Dモーション制作。ヘッドトラッキング、体の動き、ハンドジェスチャー、表情切り替えを含みます。",
+        "ko": "전문 Live2D 모션 제작. 헤드 트래킹, 바디 움직임, 핸드 제스처, 표정 전환을 포함합니다.",
+        "es": "Producción profesional de movimiento Live2D incluyendo seguimiento de cabeza, movimiento corporal, gestos de manos y transiciones de expresión."
+      }
+    },
+    {
+      "icon": "🎨",
+      "title": {
+        "zh-TW": "角色立繪設計", "zh-CN": "角色立绘设计", "en": "Character Art", "ja": "キャラクター立ち絵", "ko": "캐릭터 일러스트", "es": "Arte de Personaje"
+      },
+      "desc": {
+        "zh-TW": "原創角色立繪繪製，包含人物設計、服裝設定與表情差分。",
+        "zh-CN": "原创角色立绘绘制，包含人物设计、服装设定与表情差分。",
+        "en": "Original character illustration with design, outfit, and expression variations.",
+        "ja": "オリジナルキャラクターの立ち絵制作。デザイン、衣装設定、表情差分を含みます。",
+        "ko": "오리지널 캐릭터 일러스트 제작. 디자인, 의상 설정, 표정 차분을 포함합니다.",
+        "es": "Ilustración de personaje original con diseño, vestimenta y variaciones de expresión."
+      }
+    },
+    {
+      "icon": "🖌️",
+      "title": {
+        "zh-TW": "插畫創作", "zh-CN": "插画创作", "en": "Illustration", "ja": "イラスト制作", "ko": "일러스트 제작", "es": "Ilustración"
+      },
+      "desc": {
+        "zh-TW": "各類插畫繪製，包含宣傳圖、賀圖、場景插畫等。",
+        "zh-CN": "各类插画绘制，包含宣传图、贺图、场景插画等。",
+        "en": "Various illustration work including promotional art, celebration art, and scene illustrations.",
+        "ja": "各種イラスト制作。宣伝用イラスト、お祝いイラスト、背景イラストなど。",
+        "ko": "각종 일러스트 제작. 홍보용 일러스트, 축하 일러스트, 배경 일러스트 등.",
+        "es": "Trabajos de ilustración variados incluyendo arte promocional, arte de celebración e ilustraciones de escena."
+      }
+    },
+    {
+      "icon": "💎",
+      "title": {
+        "zh-TW": "VTS 掛件製作", "zh-CN": "VTS 挂件制作", "en": "VTS Accessories", "ja": "VTSアクセサリー", "ko": "VTS 액세서리", "es": "Accesorios VTS"
+      },
+      "desc": {
+        "zh-TW": "VTube Studio 專用掛件與道具製作，可隨動作互動。",
+        "zh-CN": "VTube Studio 专用挂件与道具制作，可随动作互动。",
+        "en": "VTube Studio accessories and props that interact with your model's movement.",
+        "ja": "VTube Studio専用アクセサリーと小道具制作。モデルの動きと連動します。",
+        "ko": "VTube Studio 전용 액세서리와 소품 제작. 모델의 움직임과 연동됩니다.",
+        "es": "Accesorios y utilidades para VTube Studio que interactúan con el movimiento de tu modelo."
+      }
+    },
+    {
+      "icon": "😊",
+      "title": {
+        "zh-TW": "表情包設計", "zh-CN": "表情包设计", "en": "Emoji Design", "ja": "エモートデザイン", "ko": "이모지 디자인", "es": "Diseño de Emojis"
+      },
+      "desc": {
+        "zh-TW": "客製化表情包與貼圖設計，適用於 Discord、LINE 等平台。",
+        "zh-CN": "客制化表情包与贴图设计，适用于 Discord、LINE 等平台。",
+        "en": "Custom emoji and sticker design for Discord, LINE, and other platforms.",
+        "ja": "カスタムエモートとスタンプデザイン。Discord、LINEなどに対応。",
+        "ko": "커스텀 이모지와 스티커 디자인. Discord, LINE 등 플랫폼에 적합합니다.",
+        "es": "Diseño personalizado de emojis y stickers para Discord, LINE y otras plataformas."
+      }
+    }
+  ],
+  "process": [
+    {
+      "num": "01",
+      "title": {
+        "zh-TW": "溝通需求", "zh-CN": "沟通需求", "en": "Consultation", "ja": "ご相談", "ko": "상담", "es": "Consulta"
+      },
+      "desc": {
+        "zh-TW": "透過訊息溝通，了解您的需求、預算與期望風格。",
+        "zh-CN": "透过讯息沟通，了解您的需求、预算与期望风格。",
+        "en": "We discuss your needs, budget, and desired style through messaging.",
+        "ja": "メッセージでご要望、ご予算、ご希望のスタイルをお伺いします。",
+        "ko": "메시지를 통해 요구사항, 예산, 원하는 스타일을 상담합니다.",
+        "es": "Discutimos tus necesidades, presupuesto y estilo deseado a través de mensajes."
+      }
+    },
+    {
+      "num": "02",
+      "title": {
+        "zh-TW": "確認方案與報價", "zh-CN": "确认方案与报价", "en": "Quote & Confirm", "ja": "お見積もり・確認", "ko": "견적 및 확정", "es": "Cotización y Confirmación"
+      },
+      "desc": {
+        "zh-TW": "提供詳細方案與報價，確認後支付訂金開始製作。",
+        "zh-CN": "提供详细方案与报价，确认后支付订金开始制作。",
+        "en": "I provide a detailed plan and quote. A deposit starts the production.",
+        "ja": "詳細なプランとお見積もりをご提示。ご確認後、着手金をお支払いいただき制作開始。",
+        "ko": "상세한 계획과 견적을 제공합니다. 확인 후 계약금을 지불하면 제작이 시작됩니다.",
+        "es": "Proporciono un plan detallado y cotización. Un depósito inicia la producción."
+      }
+    },
+    {
+      "num": "03",
+      "title": {
+        "zh-TW": "創作製作", "zh-CN": "创作制作", "en": "Production", "ja": "制作", "ko": "제작", "es": "Producción"
+      },
+      "desc": {
+        "zh-TW": "依據確認方案進行創作，過程中會定期回報進度。",
+        "zh-CN": "依据确认方案进行创作，过程中会定期回报进度。",
+        "en": "Creation begins based on the confirmed plan, with regular progress updates.",
+        "ja": "確定したプランに基づき制作を進めます。定期的に進捗をご報告します。",
+        "ko": "확정된 계획에 따라 제작을 진행합니다. 정기적으로 진행 상황을 보고합니다.",
+        "es": "La creación comienza según el plan confirmado, con actualizaciones regulares de progreso."
+      }
+    },
+    {
+      "num": "04",
+      "title": {
+        "zh-TW": "反饋修改", "zh-CN": "反馈修改", "en": "Feedback & Revisions", "ja": "ご確認・修正", "ko": "피드백 및 수정", "es": "Comentarios y Revisiones"
+      },
+      "desc": {
+        "zh-TW": "提供初稿供您確認，根據反饋進行調整與修改。",
+        "zh-CN": "提供初稿供您确认，根据反馈进行调整与修改。",
+        "en": "I share drafts for your review and make adjustments based on your feedback.",
+        "ja": "下書きをご確認いただき、ご意見に基づいて調整・修正を行います。",
+        "ko": "초안을 공유하여 확인받고, 피드백에 따라 조정과 수정을 진행합니다.",
+        "es": "Comparto borradores para tu revisión y hago ajustes según tus comentarios."
+      }
+    },
+    {
+      "num": "05",
+      "title": {
+        "zh-TW": "交付完成", "zh-CN": "交付完成", "en": "Delivery", "ja": "納品", "ko": "납품", "es": "Entrega"
+      },
+      "desc": {
+        "zh-TW": "確認滿意後交付最終檔案，完成委託。",
+        "zh-CN": "确认满意后交付最终档案，完成委托。",
+        "en": "Once you're satisfied, the final files are delivered and the commission is complete.",
+        "ja": "ご満足いただけましたら最終ファイルを納品し、依頼完了です。",
+        "ko": "만족하시면 최종 파일을 납품하고 의뢰가 완료됩니다.",
+        "es": "Una vez que estés satisfecho, se entregan los archivos finales y la comisión está completa."
+      }
+    }
+  ],
+  "testimonials": [
+    { "name": "Aoi", "role": "VTuber", "initial": "A", "text_key": "t1" },
+    { "name": "Ren", "role": "Streamer", "initial": "R", "text_key": "t2" },
+    { "name": "Mika", "role": "Content Creator", "initial": "M", "text_key": "t3" }
+  ],
+  "testimonials_text": {
+    "t1": {
+      "zh-TW": "Kyuu 的作品非常精緻，動態自然流暢，溝通也很有耐心，強烈推薦！",
+      "zh-CN": "Kyuu 的作品非常精致，动态自然流畅，沟通也很有耐心，强烈推荐！",
+      "en": "Kyuu's work is incredibly detailed, the motion is smooth and natural, and communication was very patient. Highly recommended!",
+      "ja": "Kyuuさんの作品はとても繊細で、動きも自然で滑らかです。コミュニケーションも丁寧で、強くおすすめします！",
+      "ko": "Kyuu님의 작품은 정말 섬세하고 움직임이 자연스러우며 소통도 인내심 있게 해주셔서 강력 추천합니다!",
+      "es": "¡El trabajo de Kyuu es increíblemente detallado, el movimiento es suave y natural, y la comunicación fue muy paciente. ¡Muy recomendado!"
+    },
+    "t2": {
+      "zh-TW": "第二次合作了，品質依舊穩定，進度回報即時，是值得信賴的創作者。",
+      "zh-CN": "第二次合作了，品质依旧稳定，进度回报即时，是值得信赖的创作者。",
+      "en": "Second time working together, quality remains consistent, progress updates are timely — a creator you can trust.",
+      "ja": "2回目の依頼ですが、クオリティは安定していて進捗報告もタイムリー。信頼できるクリエイターさんです。",
+      "ko": "두 번째 협업인데 퀄리티는 여전히 안정적이고 진행 상황 보고도 즉각적이어서 믿을 수 있는 크리에이터입니다.",
+      "es": "Es la segunda vez que trabajamos juntos, la calidad se mantiene constante y las actualizaciones de progreso son oportunas: una creadora en la que puedes confiar."
+    },
+    "t3": {
+      "zh-TW": "從設計到成品都超出預期，皮套的物理效果特別棒，非常滿意這次的合作。",
+      "zh-CN": "从设计到成品都超出预期，皮套的物理效果特别棒，非常满意这次的合作。",
+      "en": "From design to final product, everything exceeded expectations. The physics on the model is especially great. Very satisfied!",
+      "ja": "デザインから完成品まで期待以上でした。モデルの物理演算が特に素晴らしく、大変満足しています。",
+      "ko": "디자인부터 완성품까지 기대 이상이었고 모델의 물리 효과가 특히 훌륭해서 이번 협업에 매우 만족합니다.",
+      "es": "Desde el diseño hasta el producto final, todo superó las expectativas. La física del modelo es especialmente genial. ¡Muy satisfecha!"
+    }
+  },
+  "contact": {
+    "email": "contact@9thstudio.com",
+    "discord": "@kyu_506",
+    "social": "@kyu_506"
+  },
+  "footer": {
+    "tagline": {
+      "zh-TW": "9th Studio — 專注於 VTuber 皮套、Live2D 動畫與角色插畫創作。",
+      "zh-CN": "9th Studio — 专注于 VTuber 皮套、Live2D 动画与角色插画创作。",
+      "en": "9th Studio — Specializing in VTuber models, Live2D animation, and character illustration.",
+      "ja": "9th Studio — VTuberモデル、Live2Dアニメーション、キャラクターイラストを専門としています。",
+      "ko": "9th Studio — VTuber 모델, Live2D 애니메이션, 캐릭터 일러스트를 전문으로 합니다.",
+      "es": "9th Studio — Especializada en modelos VTuber, animación Live2D e ilustración de personajes."
+    },
+    "nav_title": {
+      "zh-TW": "網站導覽", "zh-CN": "网站导览", "en": "Navigation", "ja": "ナビゲーション", "ko": "사이트 이동", "es": "Navegación"
+    },
+    "services_title": {
+      "zh-TW": "服務項目", "zh-CN": "服务项目", "en": "Services", "ja": "サービス", "ko": "서비스", "es": "Servicios"
+    },
+    "rights": {
+      "zh-TW": "保留所有權利。", "zh-CN": "保留所有权利。", "en": "All rights reserved.", "ja": "All rights reserved.", "ko": "All rights reserved.", "es": "Todos los derechos reservados."
+    },
+    "made": {
+      "zh-TW": "以 ♥ 製作", "zh-CN": "以 ♥ 制作", "en": "Made with ♥", "ja": "Made with ♥", "ko": "Made with ♥", "es": "Hecho con ♥"
+    }
+  },
+  "section_labels": {
+    "services": {
+      "eyebrow": { "zh-TW": "SERVICES", "zh-CN": "SERVICES", "en": "SERVICES", "ja": "SERVICES", "ko": "SERVICES", "es": "SERVICIOS" },
+      "title": { "zh-TW": "服務項目", "zh-CN": "服务项目", "en": "Services", "ja": "サービス", "ko": "서비스", "es": "Servicios" },
+      "subtitle": { "zh-TW": "提供全方位的虛擬形象創作服務", "zh-CN": "提供全方位的虚拟形象创作服务", "en": "Comprehensive virtual avatar creation services", "ja": "バーチャルアバター制作の総合サービス", "ko": "버추얼 아바타 제작의 종합 서비스", "es": "Servicios integrales de creación de avatares virtuales" }
+    },
+    "portfolio": {
+      "eyebrow": { "zh-TW": "PORTFOLIO", "zh-CN": "PORTFOLIO", "en": "PORTFOLIO", "ja": "PORTFOLIO", "ko": "PORTFOLIO", "es": "PORTAFOLIO" },
+      "title": { "zh-TW": "作品展示", "zh-CN": "作品展示", "en": "Portfolio", "ja": "作品紹介", "ko": "작품 전시", "es": "Portafolio" },
+      "subtitle": { "zh-TW": "精選近期作品，點擊查看詳情", "zh-CN": "精选近期作品，点击查看详情", "en": "Selected recent works — click to view details", "ja": "最近の作品を厳選して紹介。クリックで詳細を表示", "ko": "최근 작품을 엄선하여 소개합니다. 클릭하여 자세히 보기", "es": "Trabajos recientes seleccionados — haz clic para ver detalles" },
+      "view": { "zh-TW": "觀看作品", "zh-CN": "观看作品", "en": "View Work", "ja": "作品を見る", "ko": "작품 보기", "es": "Ver Trabajo" },
+      "tech": { "zh-TW": "使用技術", "zh-CN": "使用技术", "en": "Technologies", "ja": "使用技術", "ko": "사용 기술", "es": "Tecnologías" }
+    },
+    "process": {
+      "eyebrow": { "zh-TW": "WORKFLOW", "zh-CN": "WORKFLOW", "en": "WORKFLOW", "ja": "WORKFLOW", "ko": "WORKFLOW", "es": "FLUJO DE TRABAJO" },
+      "title": { "zh-TW": "委託流程", "zh-CN": "委托流程", "en": "Commission Process", "ja": "依頼の流れ", "ko": "의뢰 과정", "es": "Proceso de Comisión" },
+      "subtitle": { "zh-TW": "簡單透明的五步驟，適用於所有委託類型", "zh-CN": "简单透明的五步骤，适用于所有委托类型", "en": "A simple, transparent 5-step process for all commission types", "ja": "すべての依頼タイプに対応する、シンプルで透明な5ステップ", "ko": "모든 의뢰 유형에 적용되는 간단하고 투명한 5단계", "es": "Un proceso de 5 pasos simple y transparente para todos los tipos de comisión" }
+    },
+    "pricing": {
+      "eyebrow": { "zh-TW": "PRICING", "zh-CN": "PRICING", "en": "PRICING", "ja": "PRICING", "ko": "PRICING", "es": "PRECIOS" },
+      "title": { "zh-TW": "價目表", "zh-CN": "价目表", "en": "Pricing", "ja": "料金表", "ko": "가격표", "es": "Lista de Precios" },
+      "subtitle": { "zh-TW": "以下為參考起價，實際價格依需求複雜度調整", "zh-CN": "以下为参考起价，实际价格依需求复杂度调整", "en": "Reference starting prices — final quotes vary based on complexity", "ja": "以下は参考価格です。最終的な料金はご要望の複雑さにより異なります", "ko": "아래는 참고 시작 가격이며, 최종 가격은 요구사항의 복잡도에 따라 달라집니다", "es": "Precios de referencia — las cotizaciones finales varían según la complejidad" },
+      "from": { "zh-TW": "起", "zh-CN": "起", "en": "from", "ja": "〜", "ko": "부터", "es": "desde" },
+      "note": { "zh-TW": "* 以上價格僅供參考，最終報價需根據具體需求評估。歡迎聯絡獲取免費報價。", "zh-CN": "* 以上价格仅供参考，最终报价需根据具体需求评估。欢迎联络获取免费报价。", "en": "* Prices above are for reference only. Final quotes require a detailed needs assessment. Contact me for a free quote.", "ja": "* 上記の価格は参考です。最終的なお見積もりは詳細なご要望を伺ってからとなります。お気軽にお問い合わせください。", "ko": "* 위 가격은 참고용입니다. 최종 견적은 상세한 요구사항을 바탕으로 평가됩니다. 무료 견적을 위해 문의해 주세요.", "es": "* Los precios anteriores son solo de referencia. Las cotizaciones finales requieren una evaluación detallada de necesidades. Contáctame para una cotización gratuita." }
+    },
+    "testimonials": {
+      "eyebrow": { "zh-TW": "TESTIMONIALS", "zh-CN": "TESTIMONIALS", "en": "TESTIMONIALS", "ja": "TESTIMONIALS", "ko": "TESTIMONIALS", "es": "TESTIMONIOS" },
+      "title": { "zh-TW": "客戶評價", "zh-CN": "客户评价", "en": "Client Reviews", "ja": "お客様の声", "ko": "고객 후기", "es": "Opiniones de Clientes" }
+    },
+    "contact": {
+      "eyebrow": { "zh-TW": "CONTACT", "zh-CN": "CONTACT", "en": "CONTACT", "ja": "CONTACT", "ko": "CONTACT", "es": "CONTACTO" },
+      "title": { "zh-TW": "聯絡委託", "zh-CN": "联络委托", "en": "Contact", "ja": "お問い合わせ", "ko": "문의", "es": "Contacto" },
+      "subtitle": { "zh-TW": "有任何問題或委託需求，歡迎隨時聯絡", "zh-CN": "有任何问题或委托需求，欢迎随时联络", "en": "Have questions or a commission in mind? Feel free to reach out", "ja": "ご質問やご依頼がございましたら、お気軽にご連絡ください", "ko": "궁금한 점이나 의뢰 요청이 있으시면 언제든지 연락해 주세요", "es": "¿Tienes preguntas o una comisión en mente? No dudes en contactarme" },
+      "status_label": { "zh-TW": "委託檔期", "zh-CN": "委托档期", "en": "Commission Status", "ja": "依頼状況", "ko": "의뢰 현황", "es": "Estado de Comisión" },
+      "email_label": { "zh-TW": "電子郵件", "zh-CN": "电子邮件", "en": "Email", "ja": "メールアドレス", "ko": "이메일", "es": "Correo Electrónico" },
+      "discord_label": { "zh-TW": "Discord", "zh-CN": "Discord", "en": "Discord", "ja": "Discord", "ko": "Discord", "es": "Discord" },
+      "social_label": { "zh-TW": "社交媒體", "zh-CN": "社交媒体", "en": "Social Media", "ja": "SNS", "ko": "소셜 미디어", "es": "Redes Sociales" },
+      "form": {
+        "name": { "zh-TW": "您的名稱", "zh-CN": "您的名称", "en": "Your Name", "ja": "お名前", "ko": "이름", "es": "Tu Nombre" },
+        "email": { "zh-TW": "電子郵件", "zh-CN": "电子邮件", "en": "Email", "ja": "メールアドレス", "ko": "이메일", "es": "Correo Electrónico" },
+        "type": { "zh-TW": "委託類型", "zh-CN": "委托类型", "en": "Commission Type", "ja": "依頼種別", "ko": "의뢰 유형", "es": "Tipo de Comisión" },
+        "type_placeholder": { "zh-TW": "請選擇委託類型", "zh-CN": "请选择委托类型", "en": "Select a commission type", "ja": "依頼種別を選択してください", "ko": "의뢰 유형을 선택하세요", "es": "Selecciona un tipo de comisión" },
+        "message": { "zh-TW": "委託內容描述", "zh-CN": "委托内容描述", "en": "Commission Details", "ja": "依頼内容の詳細", "ko": "의뢰 내용 설명", "es": "Detalles de la Comisión" },
+        "submit": { "zh-TW": "送出委託請求", "zh-CN": "送出委托请求", "en": "Send Request", "ja": "依頼を送信", "ko": "의뢰 보내기", "es": "Enviar Solicitud" },
+        "sent": { "zh-TW": "已送出！感謝您的聯絡", "zh-CN": "已送出！感谢您的联络", "en": "Sent! Thank you for reaching out", "ja": "送信しました！ご連絡ありがとうございます", "ko": "전송되었습니다! 연락해 주셔서 감사합니다", "es": "¡Enviado! Gracias por contactarme" }
+      }
+    }
+  },
+  "nav": {
+    "about": { "zh-TW": "關於", "zh-CN": "关于", "en": "About", "ja": "プロフィール", "ko": "소개", "es": "Sobre mí" },
+    "services": { "zh-TW": "服務", "zh-CN": "服务", "en": "Services", "ja": "サービス", "ko": "서비스", "es": "Servicios" },
+    "portfolio": { "zh-TW": "作品", "zh-CN": "作品", "en": "Works", "ja": "作品", "ko": "작품", "es": "Trabajos" },
+    "process": { "zh-TW": "流程", "zh-CN": "流程", "en": "Process", "ja": "流れ", "ko": "과정", "es": "Proceso" },
+    "pricing": { "zh-TW": "價目", "zh-CN": "价目", "en": "Pricing", "ja": "料金", "ko": "가격", "es": "Precios" },
+    "contact": { "zh-TW": "聯絡", "zh-CN": "联络", "en": "Contact", "ja": "お問い合わせ", "ko": "문의", "es": "Contacto" }
+  },
+  "commission": {
+    "status": {
+      "open": { "zh-TW": "開放委託", "zh-CN": "开放委托", "en": "Commissions Open", "ja": "依頼受付中", "ko": "의뢰 가능", "es": "Comisiones Abiertas" },
+      "full": { "zh-TW": "額滿", "zh-CN": "额满", "en": "Full", "ja": "満員", "ko": "마감", "es": "Lleno" },
+      "paused": { "zh-TW": "暫停", "zh-CN": "暂停", "en": "Paused", "ja": "一時停止", "ko": "일시중지", "es": "Pausado" }
+    },
+    "badge": {
+      "open": { "zh-TW": "目前開放委託中", "zh-CN": "目前开放委托中", "en": "Currently accepting commissions", "ja": "現在依頼を受け付けています", "ko": "현재 의뢰를 받고 있습니다", "es": "Actualmente aceptando comisiones" },
+      "full": { "zh-TW": "本檔期已額滿", "zh-CN": "本档期已额满", "en": "This slot is fully booked", "ja": "この枠は満員です", "ko": "이번 슬롯은 마감되었습니다", "es": "Este cupo está completo" },
+      "paused": { "zh-TW": "委託暫停中", "zh-CN": "委托暂停中", "en": "Commissions paused", "ja": "依頼を一時停止中", "ko": "의뢰를 일시중지 중", "es": "Comisiones pausadas" }
+    }
+  },
+  "portfolio_categories": {
+    "vtuber": { "zh-TW": "VTUBER 皮套", "zh-CN": "VTUBER 皮套", "en": "VTUBER MODEL", "ja": "VTUBERモデル", "ko": "VTUBER 모델", "es": "MODELO VTUBER" },
+    "live2d": { "zh-TW": "LIVE2D 動畫", "zh-CN": "LIVE2D 动画", "en": "LIVE2D ANIMATION", "ja": "LIVE2Dアニメ", "ko": "LIVE2D 애니", "es": "ANIMACIÓN LIVE2D" },
+    "character": { "zh-TW": "角色立繪", "zh-CN": "角色立绘", "en": "CHARACTER ART", "ja": "キャラクター", "ko": "캐릭터", "es": "ARTE DE PERSONAJE" },
+    "illustration": { "zh-TW": "插畫", "zh-CN": "插画", "en": "ILLUSTRATION", "ja": "イラスト", "ko": "일러스트", "es": "ILUSTRACIÓN" },
+    "vts": { "zh-TW": "VTS 掛件", "zh-CN": "VTS 挂件", "en": "VTS ACCESSORY", "ja": "VTSアクセ", "ko": "VTS 액세", "es": "ACCESORIO VTS" },
+    "emoji": { "zh-TW": "表情包", "zh-CN": "表情包", "en": "EMOJI", "ja": "エモート", "ko": "이모지", "es": "EMOJI" }
+  },
+  "portfolio_filter": {
+    "all": { "zh-TW": "全部", "zh-CN": "全部", "en": "All", "ja": "すべて", "ko": "전체", "es": "Todo" },
+    "vtuber": { "zh-TW": "VTuber 皮套", "zh-CN": "VTuber 皮套", "en": "VTuber Models", "ja": "VTuberモデル", "ko": "VTuber 모델", "es": "Modelos VTuber" },
+    "live2d": { "zh-TW": "Live2D 動畫", "zh-CN": "Live2D 动画", "en": "Live2D Animation", "ja": "Live2Dアニメ", "ko": "Live2D 애니", "es": "Animación Live2D" },
+    "character": { "zh-TW": "角色立繪", "zh-CN": "角色立绘", "en": "Character Art", "ja": "キャラ立ち絵", "ko": "캐릭터 일러", "es": "Arte de Personaje" },
+    "illustration": { "zh-TW": "插畫", "zh-CN": "插画", "en": "Illustration", "ja": "イラスト", "ko": "일러스트", "es": "Ilustración" },
+    "vts": { "zh-TW": "VTS 掛件", "zh-CN": "VTS 挂件", "en": "VTS Accessories", "ja": "VTSアクセ", "ko": "VTS 액세", "es": "Accesorios VTS" },
+    "emoji": { "zh-TW": "表情包", "zh-CN": "表情包", "en": "Emojis", "ja": "エモート", "ko": "이모지", "es": "Emojis" }
+  },
+  "commission_type_options": {
+    "vtuber": { "zh-TW": "VTuber 皮套", "zh-CN": "VTuber 皮套", "en": "VTuber Model", "ja": "VTuberモデル", "ko": "VTuber 모델", "es": "Modelo VTuber" },
+    "live2d": { "zh-TW": "Live2D 動畫", "zh-CN": "Live2D 动画", "en": "Live2D Animation", "ja": "Live2Dアニメ", "ko": "Live2D 애니메이션", "es": "Animación Live2D" },
+    "character": { "zh-TW": "角色立繪", "zh-CN": "角色立绘", "en": "Character Art", "ja": "キャラクター立ち絵", "ko": "캐릭터 일러스트", "es": "Arte de Personaje" },
+    "illustration": { "zh-TW": "插畫創作", "zh-CN": "插画创作", "en": "Illustration", "ja": "イラスト", "ko": "일러스트", "es": "Ilustración" },
+    "vts": { "zh-TW": "VTS 掛件", "zh-CN": "VTS 挂件", "en": "VTS Accessory", "ja": "VTSアクセサリー", "ko": "VTS 액세서리", "es": "Accesorio VTS" },
+    "emoji": { "zh-TW": "表情包", "zh-CN": "表情包", "en": "Emoji", "ja": "エモート", "ko": "이모지", "es": "Emoji" },
+    "other": { "zh-TW": "其他", "zh-CN": "其他", "en": "Other", "ja": "その他", "ko": "기타", "es": "Otro" }
+  },
+  "about_stats_labels": {
+    "models": { "zh-TW": "完成建模作品", "zh-CN": "完成建模作品", "en": "Models Completed", "ja": "完成モデル", "ko": "완성 모델", "es": "Modelos Completados" },
+    "collaborators": { "zh-TW": "合作創作者", "zh-CN": "合作创作者", "en": "Collaborators", "ja": "コラボクリエイター", "ko": "협업 크리에이터", "es": "Colaboradores" },
+    "since": { "zh-TW": "開始接單", "zh-CN": "开始接单", "en": "Since", "ja": "活動開始", "ko": "의뢰 시작", "es": "Desde" },
+    "services": { "zh-TW": "服務類型", "zh-CN": "服务类型", "en": "Service Types", "ja": "サービス種別", "ko": "서비스 유형", "es": "Tipos de Servicio" }
+  }
+}
