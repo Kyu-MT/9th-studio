@@ -7,7 +7,12 @@
       "title": "VTuber Model #1",
       "desc": "Full-body Live2D VTuber model with physics and expressions.",
       "media_url": "https://aka.doubaocdn.com/s/yxMVuki22U",
-      "tech": ["Live2D Cubism", "Physics", "Expressions"]
+      "tech": [
+        "Live2D Cubism",
+        "Physics",
+        "Expressions"
+      ],
+      "cover_image": "/assets/uploads/recording-2026-04-16-131100.gif"
     },
     {
       "id": 2,
@@ -16,7 +21,10 @@
       "title": "VTuber Model #2",
       "desc": "Half-body VTuber model with detailed hair physics.",
       "media_url": "https://aka.doubaocdn.com/s/mQRJqSUK5F",
-      "tech": ["Live2D Cubism", "Hair Physics"]
+      "tech": [
+        "Live2D Cubism",
+        "Hair Physics"
+      ]
     },
     {
       "id": 3,
@@ -25,7 +33,10 @@
       "title": "VTuber Model #3",
       "desc": "Chibi-style VTuber model with cute animations.",
       "media_url": "https://aka.doubaocdn.com/s/Mzh27633D7",
-      "tech": ["Live2D Cubism", "Chibi Rig"]
+      "tech": [
+        "Live2D Cubism",
+        "Chibi Rig"
+      ]
     },
     {
       "id": 4,
@@ -34,7 +45,10 @@
       "title": "VTuber Model #4",
       "desc": "Cool-style male VTuber model with dynamic poses.",
       "media_url": "https://aka.doubaocdn.com/s/kPSpx1TVWq",
-      "tech": ["Live2D Cubism", "Dynamic Poses"]
+      "tech": [
+        "Live2D Cubism",
+        "Dynamic Poses"
+      ]
     },
     {
       "id": 5,
@@ -43,7 +57,10 @@
       "title": "VTuber Model #5",
       "desc": "Fantasy-themed VTuber model with accessories.",
       "media_url": "https://aka.doubaocdn.com/s/AYfTwnsvAV",
-      "tech": ["Live2D Cubism", "Accessories"]
+      "tech": [
+        "Live2D Cubism",
+        "Accessories"
+      ]
     },
     {
       "id": 6,
@@ -52,7 +69,10 @@
       "title": "Live2D Animation #1",
       "desc": "Smooth Live2D animation showcase with head turns.",
       "media_url": "https://aka.doubaocdn.com/s/nFqPaykcmV",
-      "tech": ["Live2D Animation", "Head Tracking"]
+      "tech": [
+        "Live2D Animation",
+        "Head Tracking"
+      ]
     },
     {
       "id": 7,
@@ -61,7 +81,10 @@
       "title": "Live2D Animation #2",
       "desc": "Body movement and breathing animation demo.",
       "media_url": "https://aka.doubaocdn.com/s/2egKU2qHvI",
-      "tech": ["Live2D Animation", "Body Physics"]
+      "tech": [
+        "Live2D Animation",
+        "Body Physics"
+      ]
     },
     {
       "id": 8,
@@ -70,7 +93,10 @@
       "title": "Live2D Animation #3",
       "desc": "Expression and emotion transition showcase.",
       "media_url": "https://aka.doubaocdn.com/s/yl7vwQpdYs",
-      "tech": ["Live2D Animation", "Expressions"]
+      "tech": [
+        "Live2D Animation",
+        "Expressions"
+      ]
     },
     {
       "id": 9,
@@ -79,7 +105,10 @@
       "title": "Live2D Animation #4",
       "desc": "Hand gestures and interactive motion demo.",
       "media_url": "https://aka.doubaocdn.com/s/wrz0b50tkZ",
-      "tech": ["Live2D Animation", "Hand Motion"]
+      "tech": [
+        "Live2D Animation",
+        "Hand Motion"
+      ]
     }
   ]
 }
