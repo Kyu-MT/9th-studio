@@ -201,6 +201,10 @@ function workMediaUrl(work) {
   return safeMediaUrl(work?.media_url || work?.video || "");
 }
 
+function workSourceUrl(work) {
+  return safeMediaUrl(work?.source_url || workMediaUrl(work));
+}
+
 function workCoverUrl(work) {
   return safeMediaUrl(work?.cover_image || work?.cover || work?.image || "");
 }
@@ -504,7 +508,7 @@ function Portfolio({ lang, siteContent, worksData }) {
           ))}
         </div>
         {filtered.length > 0 ? (
-          <div className="accordion-gallery reveal" role="list" aria-label={getText(labels.title, lang, "Portfolio")}>
+          <div className="accordion-gallery" role="list" aria-label={getText(labels.title, lang, "Portfolio")}>
             {filtered.map((work, index) => {
               const isActive = index === Math.min(activeIndex, filtered.length - 1);
               const coverUrl = workCoverUrl(work);
@@ -554,8 +558,8 @@ function Portfolio({ lang, siteContent, worksData }) {
               <div className="modal-category">{getText(catLabels[selected.category], lang, selected.category)}</div>
               <h2 className="modal-title">{selected.title}</h2>
               <p className="modal-desc">{selected.desc}</p>
-              {workMediaUrl(selected) && (
-                <a className="work-source-link" href={workMediaUrl(selected)} target="_blank" rel="noopener noreferrer">
+              {workSourceUrl(selected) && (
+                <a className="work-source-link" href={workSourceUrl(selected)} target="_blank" rel="noopener noreferrer">
                   在原始平台打开 ↗
                 </a>
               )}
@@ -583,7 +587,7 @@ function Process({ lang, siteContent }) {
           <ShuffleText tag="h2" className="section-title" text={getText(labels.title, lang, "Process")} />
           <p className="section-subtitle">{getText(labels.subtitle, lang, "")}</p>
         </div>
-        <div className="process-timeline">
+        <div className="process-timeline" style={{ "--process-count": Math.max(steps.length, 1) }}>
           {steps.map((s, i) => (
             <div className="process-step reveal reveal-delay-1" key={i} style={{ transitionDelay: `${i * 0.1}s` }}>
               <div className="step-number">{s.num || `0${i+1}`}</div>
@@ -629,9 +633,10 @@ function Pricing({ lang, siteContent, pricingData }) {
 }
 
 // ========== Testimonials ==========
-function Testimonials({ lang, siteContent }) {
+function Testimonials({ lang, siteContent, testimonialsData }) {
   const labels = siteContent?.section_labels?.testimonials || {};
-  const items = siteContent?.testimonials || [];
+  const fallbackItems = siteContent?.testimonials || [];
+  const items = testimonialsData?.items?.length ? testimonialsData.items : fallbackItems;
   const texts = siteContent?.testimonials_text || {};
   return (
     <section id="testimonials" className="section">
@@ -644,7 +649,7 @@ function Testimonials({ lang, siteContent }) {
           {items.map((item, i) => (
             <div className="testimonial-card reveal reveal-delay-1" key={i} style={{ transitionDelay: `${i * 0.1}s` }}>
               <div className="testimonial-quote">"</div>
-              <p className="testimonial-text">{getText(texts[item.text_key], lang, "")}</p>
+              <p className="testimonial-text">{item.text || getText(texts[item.text_key], lang, "")}</p>
               <div className="testimonial-author">
                 <div className="author-avatar">{item.initial || item.name?.[0] || "?"}</div>
                 <div>
@@ -812,6 +817,7 @@ function App() {
     settings: { commission_status: DEFAULT_COMMISSION_STATUS, logo_url: "", avatar_url: "" },
     works: [],
     pricing: [],
+    testimonials: { items: [] },
     siteContent: {},
   });
   useScrollReveal(!siteData.loading);
@@ -820,10 +826,11 @@ function App() {
     let cancelled = false;
     async function loadData() {
       try {
-        const [settingsRes, worksRes, pricingRes, contentRes] = await Promise.all([
+        const [settingsRes, worksRes, pricingRes, testimonialsRes, contentRes] = await Promise.all([
           fetch("content/settings.json").then(r => r.json()).catch(() => ({})),
           fetch("content/works.json").then(r => r.json()).catch(() => ({ works: [] })),
           fetch("content/pricing.json").then(r => r.json()).catch(() => ({ items: [] })),
+          fetch("content/testimonials.json").then(r => r.json()).catch(() => ({ items: [] })),
           fetch("content/site-content.json").then(r => r.json()).catch(() => ({})),
         ]);
         if (!cancelled) {
@@ -832,6 +839,7 @@ function App() {
             settings: { commission_status: DEFAULT_COMMISSION_STATUS, logo_url: "", avatar_url: "", ...settingsRes },
             works: worksRes.works || [],
             pricing: pricingRes.items || [],
+            testimonials: testimonialsRes || { items: [] },
             siteContent: contentRes || {},
           });
         }
@@ -871,7 +879,7 @@ function App() {
         <Portfolio lang={lang} siteContent={siteData.siteContent} worksData={siteData.works} />
         <Process lang={lang} siteContent={siteData.siteContent} />
         <Pricing lang={lang} siteContent={siteData.siteContent} pricingData={siteData.pricing} />
-        <Testimonials lang={lang} siteContent={siteData.siteContent} />
+        <Testimonials lang={lang} siteContent={siteData.siteContent} testimonialsData={siteData.testimonials} />
         <Contact lang={lang} siteContent={siteData.siteContent} commissionStatus={commissionStatus} settings={siteData.settings} />
         <Footer lang={lang} siteContent={siteData.siteContent} />
         <FloatingEditButton />

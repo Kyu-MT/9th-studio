@@ -1,0 +1,22 @@
+{
+  "items": [
+    {
+      "name": "Aoi",
+      "role": "VTuber",
+      "initial": "A",
+      "text": "Kyuu 的作品非常精緻，動態自然流暢，溝通也很有耐心，強烈推薦！"
+    },
+    {
+      "name": "Ren",
+      "role": "Streamer",
+      "initial": "R",
+      "text": "第二次合作了，品質依舊穩定，進度回報即時，是值得信賴的創作者。"
+    },
+    {
+      "name": "Mika",
+      "role": "Content Creator",
+      "initial": "M",
+      "text": "從設計到成品都超出預期，皮套的物理效果特別棒，非常滿意這次的合作。"
+    }
+  ]
+}

@@ -130,6 +130,23 @@ collections:
                 required: false
                 field: { label: "技术名称", name: "tech", widget: "string" }
 
+  - name: "testimonials"
+    label: "客户评价"
+    files:
+      - name: "testimonials"
+        label: "评价列表"
+        file: "9th-studio-website/content/testimonials.json"
+        fields:
+          - label: "评价"
+            name: "items"
+            widget: "list"
+            summary: "{{fields.name}} — {{fields.role}}"
+            fields:
+              - { label: "客户名称", name: "name", widget: "string" }
+              - { label: "身份／职业", name: "role", widget: "string", required: false }
+              - { label: "头像显示字母", name: "initial", widget: "string", required: false, hint: "例如 A；留空会自动使用名称首字。" }
+              - { label: "评价内容", name: "text", widget: "text" }
+
   - name: "pricing"
     label: "价目表"
     files:
