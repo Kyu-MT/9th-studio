@@ -75,23 +75,6 @@
       ]
     },
     {
-      "media_type": "image",
-      "category": "illustration",
-      "cover_image": "/assets/uploads/gv8adc5woaagqlk.jpg",
-      "tech": [
-        "Procreate"
-      ],
-      "desc": "2022年的花子君同人插画",
-      "title": "Illustration"
-    },
-    {
-      "media_type": "image",
-      "title": "Illustration",
-      "category": "illustration",
-      "cover_image": "/assets/uploads/gxacmukbuamn2vv.jpg",
-      "desc": "Vtuber 个人插画"
-    },
-    {
       "id": 4,
       "category": "vtuber",
       "media_type": "video",
@@ -117,15 +100,16 @@
     },
     {
       "id": 9,
-      "category": "live2d",
-      "media_type": "video",
+      "category": "illustration",
+      "media_type": "image",
       "title": "Live2D Animation #4",
-      "desc": "Hand gestures and interactive motion demo.",
-      "media_url": "https://aka.doubaocdn.com/s/wrz0b50tkZ",
+      "desc": "Vtuber 个人插图",
+      "media_url": "",
       "tech": [
         "Live2D Animation",
         "Hand Motion"
-      ]
+      ],
+      "cover_image": "/assets/uploads/gxacmukbuamn2vv.jpg"
     }
   ]
 }
