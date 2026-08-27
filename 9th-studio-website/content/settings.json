@@ -1,4 +1,27 @@
 {
+  "contact_items": [
+    {
+      "label": "电子邮件",
+      "value": "kyumt0506@gmail.com",
+      "link": "mailto:kyumt0506@gmail.com",
+      "icon_text": "✉"
+    },
+    {
+      "label": "Discord",
+      "value": "@kyu_506",
+      "icon_text": "◉"
+    },
+    {
+      "label": "Vgen",
+      "value": "@kyu_506"
+    },
+    {
+      "label": "X",
+      "value": "@kyu_506",
+      "icon_text": "◎",
+      "icon_image": "https://img.magnific.com/free-vector/new-2023-twitter-logo-x-icon-design_1017-45418.jpg?w=360"
+    }
+  ],
   "site_name": "9th Studio",
   "commission_status": "open",
   "about_title": "",
@@ -13,23 +36,5 @@
   "logo_url": "",
   "hero_subtitle": "",
   "contact_email": "kyumt0506@gmail.com",
-  "hero_greeting": "",
-  "contact_items": [
-    {
-      "label": "电子邮件",
-      "value": "kyumt0506@gmail.com",
-      "link": "mailto:kyumt0506@gmail.com",
-      "icon_text": "✉"
-    },
-    {
-      "label": "Discord",
-      "value": "@kyu_506",
-      "icon_text": "◉"
-    },
-    {
-      "label": "社交媒体",
-      "value": "@kyu_506",
-      "icon_text": "◎"
-    }
-  ]
+  "hero_greeting": ""
 }
