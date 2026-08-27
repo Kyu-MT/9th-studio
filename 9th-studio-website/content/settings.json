@@ -9,17 +9,20 @@
     {
       "label": "Discord",
       "value": "@kyu_506",
-      "icon_text": "◉"
+      "icon_text": "🎮",
+      "link": ""
     },
     {
       "label": "Vgen",
-      "value": "@kyu_506"
+      "value": "@kyu_506",
+      "link": "",
+      "icon_text": "・ڡ・"
     },
     {
       "label": "X",
       "value": "@kyu_506",
-      "icon_text": "◎",
-      "icon_image": "https://img.magnific.com/free-vector/new-2023-twitter-logo-x-icon-design_1017-45418.jpg?w=360"
+      "icon_text": "×",
+      "icon_image": ""
     }
   ],
   "site_name": "9th Studio",
