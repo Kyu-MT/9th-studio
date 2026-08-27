@@ -39,30 +39,6 @@
       ]
     },
     {
-      "id": 4,
-      "category": "vtuber",
-      "media_type": "video",
-      "title": "VTuber Model #4",
-      "desc": "Cool-style male VTuber model with dynamic poses.",
-      "media_url": "https://aka.doubaocdn.com/s/kPSpx1TVWq",
-      "tech": [
-        "Live2D Cubism",
-        "Dynamic Poses"
-      ]
-    },
-    {
-      "id": 5,
-      "category": "vtuber",
-      "media_type": "video",
-      "title": "VTuber Model #5",
-      "desc": "Fantasy-themed VTuber model with accessories.",
-      "media_url": "https://aka.doubaocdn.com/s/AYfTwnsvAV",
-      "tech": [
-        "Live2D Cubism",
-        "Accessories"
-      ]
-    },
-    {
       "id": 6,
       "category": "live2d",
       "media_type": "video",
@@ -99,18 +75,6 @@
       ]
     },
     {
-      "id": 9,
-      "category": "live2d",
-      "media_type": "video",
-      "title": "Live2D Animation #4",
-      "desc": "Hand gestures and interactive motion demo.",
-      "media_url": "https://aka.doubaocdn.com/s/wrz0b50tkZ",
-      "tech": [
-        "Live2D Animation",
-        "Hand Motion"
-      ]
-    },
-    {
       "media_type": "image",
       "category": "illustration",
       "cover_image": "/assets/uploads/gv8adc5woaagqlk.jpg",
@@ -126,6 +90,42 @@
       "category": "illustration",
       "cover_image": "/assets/uploads/gxacmukbuamn2vv.jpg",
       "desc": "Vtuber 个人插画"
+    },
+    {
+      "id": 4,
+      "category": "vtuber",
+      "media_type": "video",
+      "title": "VTuber Model #4",
+      "desc": "Cool-style male VTuber model with dynamic poses.",
+      "media_url": "https://aka.doubaocdn.com/s/kPSpx1TVWq",
+      "tech": [
+        "Live2D Cubism",
+        "Dynamic Poses"
+      ]
+    },
+    {
+      "id": 5,
+      "category": "vtuber",
+      "media_type": "video",
+      "title": "VTuber Model #5",
+      "desc": "Fantasy-themed VTuber model with accessories.",
+      "media_url": "https://aka.doubaocdn.com/s/AYfTwnsvAV",
+      "tech": [
+        "Live2D Cubism",
+        "Accessories"
+      ]
+    },
+    {
+      "id": 9,
+      "category": "live2d",
+      "media_type": "video",
+      "title": "Live2D Animation #4",
+      "desc": "Hand gestures and interactive motion demo.",
+      "media_url": "https://aka.doubaocdn.com/s/wrz0b50tkZ",
+      "tech": [
+        "Live2D Animation",
+        "Hand Motion"
+      ]
     }
   ]
 }
