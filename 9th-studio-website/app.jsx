@@ -22,6 +22,212 @@ function getText(field, lang, fallback) {
   return field[lang] || field["zh-TW"] || field["en"] || fallback || "";
 }
 
+// ========== 轻量互动组件 ==========
+// 这些组件以 CSS 与浏览器原生 API 实作，维持静态网站可直接部署的特性。
+const SHUFFLE_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%&*";
+
+function ShuffleText({ text, tag = "span", className = "" }) {
+  const [display, setDisplay] = useState(text || "");
+  const timersRef = useRef([]);
+  const Tag = tag;
+
+  const clearTimers = useCallback(() => {
+    timersRef.current.forEach((timer) => window.clearTimeout(timer));
+    timersRef.current = [];
+  }, []);
+
+  const play = useCallback(() => {
+    clearTimers();
+    const finalChars = Array.from(text || "");
+    if (!finalChars.length) {
+      setDisplay("");
+      return;
+    }
+    const frames = 6;
+    for (let frame = 0; frame < frames; frame += 1) {
+      const timer = window.setTimeout(() => {
+        const next = finalChars.map((char, index) => {
+          if (char === " " || frame === frames - 1 || index <= frame) return char;
+          return SHUFFLE_CHARS[Math.floor(Math.random() * SHUFFLE_CHARS.length)];
+        }).join("");
+        setDisplay(next);
+      }, frame * 56);
+      timersRef.current.push(timer);
+    }
+  }, [clearTimers, text]);
+
+  useEffect(() => {
+    play();
+    return clearTimers;
+  }, [play, clearTimers]);
+
+  return (
+    <Tag className={"shuffle-text " + className} onMouseEnter={play} aria-label={text}>
+      {Array.from(display).map((char, index) => (
+        <span className="shuffle-text-char" aria-hidden="true" key={index}>{char === " " ? "\u00a0" : char}</span>
+      ))}
+    </Tag>
+  );
+}
+
+function SpecularButton({ children, className = "", active = false, onClick, href, type = "button" }) {
+  const ref = useRef(null);
+  const Tag = href ? "a" : "button";
+
+  const handlePointerMove = (event) => {
+    const rect = ref.current?.getBoundingClientRect();
+    if (!rect) return;
+    ref.current.style.setProperty("--specular-x", ((event.clientX - rect.left) / rect.width * 100) + "%");
+    ref.current.style.setProperty("--specular-y", ((event.clientY - rect.top) / rect.height * 100) + "%");
+    ref.current.style.setProperty("--specular-opacity", "1");
+  };
+
+  const handlePointerLeave = () => {
+    ref.current?.style.setProperty("--specular-opacity", "0");
+  };
+
+  const props = {
+    ref,
+    className: "specular-button " + (active ? "is-active " : "") + className,
+    onClick,
+    onPointerMove: handlePointerMove,
+    onPointerLeave: handlePointerLeave,
+  };
+  if (href) props.href = href;
+  else props.type = type;
+
+  return <Tag {...props}>{children}</Tag>;
+}
+
+function ClickSpark({ children }) {
+  const canvasRef = useRef(null);
+  const sparksRef = useRef([]);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return undefined;
+    const context = canvas.getContext("2d");
+    let animationFrame;
+
+    const resize = () => {
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      canvas.width = Math.round(window.innerWidth * dpr);
+      canvas.height = Math.round(window.innerHeight * dpr);
+      canvas.style.width = window.innerWidth + "px";
+      canvas.style.height = window.innerHeight + "px";
+      context.setTransform(dpr, 0, 0, dpr, 0, 0);
+    };
+
+    const draw = (now) => {
+      context.clearRect(0, 0, window.innerWidth, window.innerHeight);
+      sparksRef.current = sparksRef.current.filter((spark) => {
+        const progress = (now - spark.start) / 520;
+        if (progress >= 1) return false;
+        const alpha = 1 - progress;
+        const distance = 54 * (1 - Math.pow(1 - progress, 3));
+        context.strokeStyle = "rgba(255, 198, 237, " + alpha + ")";
+        context.lineWidth = 1.5;
+        spark.angles.forEach((angle) => {
+          const start = distance;
+          const end = distance + 15 * alpha;
+          context.beginPath();
+          context.moveTo(spark.x + Math.cos(angle) * start, spark.y + Math.sin(angle) * start);
+          context.lineTo(spark.x + Math.cos(angle) * end, spark.y + Math.sin(angle) * end);
+          context.stroke();
+        });
+        return true;
+      });
+      animationFrame = window.requestAnimationFrame(draw);
+    };
+
+    resize();
+    window.addEventListener("resize", resize);
+    animationFrame = window.requestAnimationFrame(draw);
+    return () => {
+      window.cancelAnimationFrame(animationFrame);
+      window.removeEventListener("resize", resize);
+    };
+  }, []);
+
+  const addSpark = (event) => {
+    const angles = Array.from({ length: 10 }, (_, index) => (Math.PI * 2 * index) / 10);
+    sparksRef.current.push({ x: event.clientX, y: event.clientY, start: performance.now(), angles });
+  };
+
+  return (
+    <div className="click-spark-host" onClick={addSpark}>
+      <canvas className="click-spark-canvas" ref={canvasRef} aria-hidden="true" />
+      {children}
+    </div>
+  );
+}
+
+function safeMediaUrl(value) {
+  const url = (value || "").trim();
+  if (!url) return "";
+  if (url.startsWith("/") || url.startsWith("./") || url.startsWith("assets/")) return url;
+  try {
+    const parsed = new URL(url);
+    return parsed.protocol === "https:" || parsed.protocol === "http:" ? url : "";
+  } catch {
+    return "";
+  }
+}
+
+function getEmbedUrl(url) {
+  const safeUrl = safeMediaUrl(url);
+  if (!safeUrl || safeUrl.startsWith("/") || safeUrl.startsWith(".")) return "";
+  try {
+    const parsed = new URL(safeUrl);
+    const host = parsed.hostname.replace(/^www\./, "");
+    if (host === "youtu.be") {
+      return "https://www.youtube-nocookie.com/embed/" + encodeURIComponent(parsed.pathname.slice(1)) + "?rel=0";
+    }
+    if (host === "youtube.com" || host.endsWith(".youtube.com")) {
+      const videoId = parsed.searchParams.get("v") || parsed.pathname.split("/").filter(Boolean).pop();
+      return videoId ? "https://www.youtube-nocookie.com/embed/" + encodeURIComponent(videoId) + "?rel=0" : "";
+    }
+    if (host === "vimeo.com" || host.endsWith(".vimeo.com")) {
+      const videoId = parsed.pathname.split("/").filter(Boolean).pop();
+      return videoId ? "https://player.vimeo.com/video/" + encodeURIComponent(videoId) : "";
+    }
+  } catch {
+    return "";
+  }
+  return "";
+}
+
+function workMediaUrl(work) {
+  return safeMediaUrl(work?.media_url || work?.video || "");
+}
+
+function workCoverUrl(work) {
+  return safeMediaUrl(work?.cover_image || work?.cover || work?.image || "");
+}
+
+function PortfolioMedia({ work }) {
+  const [failed, setFailed] = useState(false);
+  const mediaType = work?.media_type || (work?.video ? "video" : "image");
+  const url = workMediaUrl(work);
+  const embedUrl = mediaType === "video" ? getEmbedUrl(url) : "";
+
+  if (mediaType === "image") {
+    const imageUrl = safeMediaUrl(work?.media_url || work?.cover_image || work?.image || "");
+    return imageUrl ? <img src={imageUrl} alt={work?.title || ""} /> : <div className="media-unavailable">尚未加入作品图片</div>;
+  }
+  if (embedUrl) {
+    return <iframe src={embedUrl} title={work?.title || "Portfolio video"} allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen />;
+  }
+  if (url && !failed) {
+    return <video src={url} controls playsInline preload="metadata" onError={() => setFailed(true)} />;
+  }
+  return (
+    <a className="media-external-link" href={url || "#"} target="_blank" rel="noopener noreferrer">
+      在原始平台观看作品 ↗
+    </a>
+  );
+}
+
 // ========== 滚动动画 Hook ==========
 function useScrollReveal() {
   useEffect(() => {
@@ -39,7 +245,7 @@ function useScrollReveal() {
 }
 
 // ========== 导航栏 ==========
-function Navbar({ lang, setLang, siteContent, commissionStatus }) {
+function Navbar({ lang, setLang, siteContent, commissionStatus, settings }) {
   const [scrolled, setScrolled] = useState(false);
   const [langOpen, setLangOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -74,7 +280,7 @@ function Navbar({ lang, setLang, siteContent, commissionStatus }) {
 
   const statusClass = commissionStatus === "open" ? "status-open" : commissionStatus === "full" ? "status-full" : "status-paused";
   const statusText = getText(siteContent?.commission?.status?.[commissionStatus], lang, commissionStatus);
-  const siteName = siteContent?.site?.name || "9th Studio";
+  const siteName = settings?.site_name || siteContent?.site?.name || "9th Studio";
 
   return (
     <>
@@ -128,11 +334,14 @@ function Navbar({ lang, setLang, siteContent, commissionStatus }) {
 }
 
 // ========== Hero ==========
-function Hero({ lang, siteContent, commissionStatus, avatarUrl }) {
+function Hero({ lang, siteContent, commissionStatus, avatarUrl, settings }) {
   const hero = siteContent?.hero || {};
   const statusClass = commissionStatus === "open" ? "status-open" : commissionStatus === "full" ? "status-full" : "status-paused";
   const badgeText = getText(siteContent?.commission?.badge?.[commissionStatus], lang, "");
-  const ownerName = siteContent?.site?.owner_name || "Kyuu";
+  const ownerName = settings?.display_name || siteContent?.site?.owner_name || "Kyuu";
+  const greeting = settings?.hero_greeting || getText(hero.greeting, lang, "HELLO");
+  const subtitle = settings?.hero_subtitle || getText(hero.subtitle, lang, "");
+  const tagline = settings?.hero_tagline || getText(hero.tagline, lang, "");
 
   return (
     <section id="hero" className="hero">
@@ -142,18 +351,18 @@ function Hero({ lang, siteContent, commissionStatus, avatarUrl }) {
             <span className="status-dot"></span>
             <span>{badgeText}</span>
           </div>
-          <div className="hero-greeting">{getText(hero.greeting, lang, "HELLO")}</div>
-          <h1 className="hero-name">{ownerName}</h1>
-          <div className="hero-subtitle">{getText(hero.subtitle, lang, "")}</div>
+          <div className="hero-greeting">{greeting}</div>
+          <ShuffleText tag="h1" className="hero-name" text={ownerName} />
+          <div className="hero-subtitle">{subtitle}</div>
           <div className="hero-title">
             <span>Live 2D 建模师</span><span className="dot"></span>
             <span>VTuber Modeler</span><span className="dot"></span>
             <span>Illustrator</span>
           </div>
-          <p className="hero-tagline">{getText(hero.tagline, lang, "")}</p>
+          <p className="hero-tagline">{tagline}</p>
           <div className="hero-cta">
-            <a href="#portfolio" className="btn btn-primary">{getText(hero.cta_works, lang, "View Works")} →</a>
-            <a href="#contact" className="btn btn-secondary">{getText(hero.cta_contact, lang, "Contact")}</a>
+            <SpecularButton href="#portfolio" className="btn btn-primary">{getText(hero.cta_works, lang, "View Works")} →</SpecularButton>
+            <SpecularButton href="#contact" className="btn btn-secondary">{getText(hero.cta_contact, lang, "Contact")}</SpecularButton>
           </div>
         </div>
         <div className="hero-visual">
@@ -176,7 +385,7 @@ function Hero({ lang, siteContent, commissionStatus, avatarUrl }) {
 }
 
 // ========== About ==========
-function About({ lang, siteContent, avatarUrl }) {
+function About({ lang, siteContent, avatarUrl, settings }) {
   const about = siteContent?.about || {};
   const statsLabels = siteContent?.about_stats_labels || {};
   const stats = about.stats || [
@@ -192,16 +401,16 @@ function About({ lang, siteContent, avatarUrl }) {
       <div className="section-inner">
         <div className="section-head reveal">
           <div className="eyebrow">{getText(about.eyebrow, lang, "ABOUT ME")}</div>
-          <h2 className="section-title">{getText(about.title, lang, "About Me")}</h2>
-          <p className="section-subtitle">{getText(about.subtitle, lang, "")}</p>
+          <ShuffleText tag="h2" className="section-title" text={settings?.about_title || getText(about.title, lang, "About Me")} />
+          <p className="section-subtitle">{settings?.about_subtitle || getText(about.subtitle, lang, "")}</p>
         </div>
         <div className="about-grid">
           <div className="about-image reveal">
             <img src={avatarUrl} alt="About" />
           </div>
           <div className="about-content">
-            <p className="about-text reveal reveal-delay-1">{getText(about.text1, lang, "")}</p>
-            <p className="about-text reveal reveal-delay-2">{getText(about.text2, lang, "")}</p>
+            <p className="about-text reveal reveal-delay-1">{settings?.about_text_1 || getText(about.text1, lang, "")}</p>
+            <p className="about-text reveal reveal-delay-2">{settings?.about_text_2 || getText(about.text2, lang, "")}</p>
             <div className="about-stats reveal reveal-delay-3">
               {stats.map((s, i) => (
                 <div className="stat-card" key={i}>
@@ -232,7 +441,7 @@ function Services({ lang, siteContent }) {
       <div className="section-inner">
         <div className="section-head reveal">
           <div className="eyebrow">{getText(labels.eyebrow, lang, "SERVICES")}</div>
-          <h2 className="section-title">{getText(labels.title, lang, "Services")}</h2>
+          <ShuffleText tag="h2" className="section-title" text={getText(labels.title, lang, "Services")} />
           <p className="section-subtitle">{getText(labels.subtitle, lang, "")}</p>
         </div>
         <div className="services-grid">
@@ -253,6 +462,7 @@ function Services({ lang, siteContent }) {
 function Portfolio({ lang, siteContent, worksData }) {
   const [filter, setFilter] = useState("all");
   const [selected, setSelected] = useState(null);
+  const [activeIndex, setActiveIndex] = useState(0);
   const labels = siteContent?.section_labels?.portfolio || {};
   const filterLabels = siteContent?.portfolio_filter || {};
   const catLabels = siteContent?.portfolio_categories || {};
@@ -270,6 +480,10 @@ function Portfolio({ lang, siteContent, worksData }) {
   const filtered = filter === "all" ? worksData : worksData.filter((w) => w.category === filter);
 
   useEffect(() => {
+    setActiveIndex(0);
+  }, [filter]);
+
+  useEffect(() => {
     if (selected) { document.body.style.overflow = "hidden"; }
     else { document.body.style.overflow = ""; }
     return () => { document.body.style.overflow = ""; };
@@ -280,47 +494,70 @@ function Portfolio({ lang, siteContent, worksData }) {
       <div className="section-inner">
         <div className="section-head reveal">
           <div className="eyebrow">{getText(labels.eyebrow, lang, "PORTFOLIO")}</div>
-          <h2 className="section-title">{getText(labels.title, lang, "Portfolio")}</h2>
+          <ShuffleText tag="h2" className="section-title" text={getText(labels.title, lang, "Portfolio")} />
           <p className="section-subtitle">{getText(labels.subtitle, lang, "")}</p>
         </div>
         <div className="filter-bar reveal">
           {categories.map((c) => (
-            <button key={c.id} className={`filter-btn ${filter === c.id ? "active" : ""}`} onClick={() => setFilter(c.id)}>{c.label}</button>
+            <SpecularButton key={c.id} className="filter-btn" active={filter === c.id} onClick={() => setFilter(c.id)}>{c.label}</SpecularButton>
           ))}
         </div>
-        <div className="works-grid">
-          {filtered.map((w, i) => (
-            <div className="work-card reveal reveal-delay-1" key={w.id} style={{ transitionDelay: `${(i % 3) * 0.1}s` }} onClick={() => setSelected(w)}>
-              <div className="work-media">
-                <div className="work-poster-overlay"></div>
-                <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center", background: "linear-gradient(135deg, rgba(185,103,255,0.2), rgba(255,110,199,0.15))" }}>
-                  <span style={{ fontSize: "48px", opacity: 0.6 }}>▶</span>
-                </div>
-              </div>
-              <div className="play-btn"><svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg></div>
-              <div className="work-overlay">
-                <div className="work-overlay-content">
-                  <div className="work-category">{getText(catLabels[w.category], lang, w.category)}</div>
-                  <h3 className="work-title">{w.title}</h3>
-                  <p className="work-desc">{w.desc}</p>
-                  <span className="work-view">{getText(labels.view, lang, "View")} →</span>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
+        {filtered.length > 0 ? (
+          <div className="accordion-gallery reveal" role="list" aria-label={getText(labels.title, lang, "Portfolio")}>
+            {filtered.map((work, index) => {
+              const isActive = index === Math.min(activeIndex, filtered.length - 1);
+              const coverUrl = workCoverUrl(work);
+              return (
+                <button
+                  className={"accordion-panel " + (isActive ? "is-active" : "")}
+                  key={work.id || work.title || index}
+                  type="button"
+                  style={{ flexGrow: isActive ? 5 : 1 }}
+                  onMouseEnter={() => setActiveIndex(index)}
+                  onFocus={() => setActiveIndex(index)}
+                  onClick={() => isActive ? setSelected(work) : setActiveIndex(index)}
+                  aria-pressed={isActive}
+                >
+                  <div className="accordion-panel-media">
+                    {coverUrl ? (
+                      <img src={coverUrl} alt={work.title || ""} />
+                    ) : (
+                      <div className="work-cover-fallback"><span>{String(work.title || "9").slice(0, 1)}</span></div>
+                    )}
+                  </div>
+                  <div className="accordion-panel-shade"></div>
+                  <div className="accordion-panel-label">
+                    <span className="accordion-panel-bar"></span>
+                    <span>
+                      <span className="accordion-panel-category">{getText(catLabels[work.category], lang, work.category)}</span>
+                      <strong>{work.title}</strong>
+                      {isActive && <small>{work.desc || getText(labels.view, lang, "View")} →</small>}
+                    </span>
+                  </div>
+                </button>
+              );
+            })}
+          </div>
+        ) : (
+          <p className="portfolio-empty">此分类尚未加入作品。</p>
+        )}
       </div>
       {selected && (
         <div className="modal-overlay open" onClick={() => setSelected(null)}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
             <button className="modal-close" onClick={() => setSelected(null)}>✕</button>
             <div className="modal-media">
-              <video src={selected.video} controls autoPlay loop muted playsInline style={{ width: "100%", height: "100%", objectFit: "contain", background: "#000" }}></video>
+              <PortfolioMedia work={selected} />
             </div>
             <div className="modal-body">
               <div className="modal-category">{getText(catLabels[selected.category], lang, selected.category)}</div>
               <h2 className="modal-title">{selected.title}</h2>
               <p className="modal-desc">{selected.desc}</p>
+              {workMediaUrl(selected) && (
+                <a className="work-source-link" href={workMediaUrl(selected)} target="_blank" rel="noopener noreferrer">
+                  在原始平台打开 ↗
+                </a>
+              )}
               <div className="modal-tech-title">{getText(labels.tech, lang, "Tech")}</div>
               <div className="modal-tech-tags">
                 {selected.tech && selected.tech.map((tech, i) => (<span className="tech-tag" key={i}>{tech}</span>))}
@@ -342,7 +579,7 @@ function Process({ lang, siteContent }) {
       <div className="section-inner">
         <div className="section-head reveal">
           <div className="eyebrow">{getText(labels.eyebrow, lang, "WORKFLOW")}</div>
-          <h2 className="section-title">{getText(labels.title, lang, "Process")}</h2>
+          <ShuffleText tag="h2" className="section-title" text={getText(labels.title, lang, "Process")} />
           <p className="section-subtitle">{getText(labels.subtitle, lang, "")}</p>
         </div>
         <div className="process-timeline">
@@ -367,7 +604,7 @@ function Pricing({ lang, siteContent, pricingData }) {
       <div className="section-inner">
         <div className="section-head reveal">
           <div className="eyebrow">{getText(labels.eyebrow, lang, "PRICING")}</div>
-          <h2 className="section-title">{getText(labels.title, lang, "Pricing")}</h2>
+          <ShuffleText tag="h2" className="section-title" text={getText(labels.title, lang, "Pricing")} />
           <p className="section-subtitle">{getText(labels.subtitle, lang, "")}</p>
         </div>
         <div className="pricing-grid">
@@ -400,7 +637,7 @@ function Testimonials({ lang, siteContent }) {
       <div className="section-inner">
         <div className="section-head reveal">
           <div className="eyebrow">{getText(labels.eyebrow, lang, "TESTIMONIALS")}</div>
-          <h2 className="section-title">{getText(labels.title, lang, "Reviews")}</h2>
+          <ShuffleText tag="h2" className="section-title" text={getText(labels.title, lang, "Reviews")} />
         </div>
         <div className="testimonials-grid">
           {items.map((item, i) => (
@@ -423,7 +660,7 @@ function Testimonials({ lang, siteContent }) {
 }
 
 // ========== Contact ==========
-function Contact({ lang, siteContent, commissionStatus }) {
+function Contact({ lang, siteContent, commissionStatus, settings }) {
   const [form, setForm] = useState({ name: "", email: "", type: "", message: "" });
   const [sent, setSent] = useState(false);
   const labels = siteContent?.section_labels?.contact || {};
@@ -439,7 +676,7 @@ function Contact({ lang, siteContent, commissionStatus }) {
       <div className="section-inner">
         <div className="section-head reveal">
           <div className="eyebrow">{getText(labels.eyebrow, lang, "CONTACT")}</div>
-          <h2 className="section-title">{getText(labels.title, lang, "Contact")}</h2>
+          <ShuffleText tag="h2" className="section-title" text={getText(labels.title, lang, "Contact")} />
           <p className="section-subtitle">{getText(labels.subtitle, lang, "")}</p>
         </div>
         <div className="contact-grid">
@@ -467,7 +704,7 @@ function Contact({ lang, siteContent, commissionStatus }) {
               <label className="form-label">{getText(formLabels.message, lang, "Message")}</label>
               <textarea className="form-textarea" value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })} required></textarea>
             </div>
-            <button type="submit" className="btn-submit">{sent ? getText(formLabels.sent, lang, "Sent!") : getText(formLabels.submit, lang, "Send")}</button>
+            <SpecularButton type="submit" className="btn-submit">{sent ? getText(formLabels.sent, lang, "Sent!") : getText(formLabels.submit, lang, "Send")}</SpecularButton>
           </form>
           <div className="contact-info">
             <div className={`commission-big ${statusClass} reveal`}>
@@ -479,15 +716,15 @@ function Contact({ lang, siteContent, commissionStatus }) {
             </div>
             <div className="contact-item reveal reveal-delay-1">
               <div className="contact-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
-              <div><div className="contact-item-label">{getText(labels.email_label, lang, "Email")}</div><div className="contact-item-value">{contact.email || "contact@9thstudio.com"}</div></div>
+              <div><div className="contact-item-label">{getText(labels.email_label, lang, "Email")}</div><div className="contact-item-value">{settings?.contact_email || contact.email || "contact@9thstudio.com"}</div></div>
             </div>
             <div className="contact-item reveal reveal-delay-2">
               <div className="contact-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div>
-              <div><div className="contact-item-label">{getText(labels.discord_label, lang, "Discord")}</div><div className="contact-item-value">{contact.discord || "@kyu_506"}</div></div>
+              <div><div className="contact-item-label">{getText(labels.discord_label, lang, "Discord")}</div><div className="contact-item-value">{settings?.contact_discord || contact.discord || "@kyu_506"}</div></div>
             </div>
             <div className="contact-item reveal reveal-delay-3">
               <div className="contact-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg></div>
-              <div><div className="contact-item-label">{getText(labels.social_label, lang, "Social")}</div><div className="contact-item-value">{contact.social || "@kyu_506"}</div></div>
+              <div><div className="contact-item-label">{getText(labels.social_label, lang, "Social")}</div><div className="contact-item-value">{settings?.contact_social || contact.social || "@kyu_506"}</div></div>
             </div>
           </div>
         </div>
@@ -618,25 +855,27 @@ function App() {
   }
 
   return (
-    <div className="app-container">
-      <div className="bg-ambient">
-        <div className="bg-stars layer-1"></div>
-        <div className="bg-stars layer-2"></div>
-        <div className="bg-stars layer-3"></div>
-        <div className="bg-grid"></div>
+    <ClickSpark>
+      <div className="app-container">
+        <div className="bg-ambient">
+          <div className="bg-stars layer-1"></div>
+          <div className="bg-stars layer-2"></div>
+          <div className="bg-stars layer-3"></div>
+          <div className="bg-grid"></div>
+        </div>
+        <Navbar lang={lang} setLang={setLang} siteContent={siteData.siteContent} commissionStatus={commissionStatus} settings={siteData.settings} />
+        <Hero lang={lang} siteContent={siteData.siteContent} commissionStatus={commissionStatus} avatarUrl={avatarUrl} settings={siteData.settings} />
+        <About lang={lang} siteContent={siteData.siteContent} avatarUrl={avatarUrl} settings={siteData.settings} />
+        <Services lang={lang} siteContent={siteData.siteContent} />
+        <Portfolio lang={lang} siteContent={siteData.siteContent} worksData={siteData.works} />
+        <Process lang={lang} siteContent={siteData.siteContent} />
+        <Pricing lang={lang} siteContent={siteData.siteContent} pricingData={siteData.pricing} />
+        <Testimonials lang={lang} siteContent={siteData.siteContent} />
+        <Contact lang={lang} siteContent={siteData.siteContent} commissionStatus={commissionStatus} settings={siteData.settings} />
+        <Footer lang={lang} siteContent={siteData.siteContent} />
+        <FloatingEditButton />
       </div>
-      <Navbar lang={lang} setLang={setLang} siteContent={siteData.siteContent} commissionStatus={commissionStatus} />
-      <Hero lang={lang} siteContent={siteData.siteContent} commissionStatus={commissionStatus} avatarUrl={avatarUrl} />
-      <About lang={lang} siteContent={siteData.siteContent} avatarUrl={avatarUrl} />
-      <Services lang={lang} siteContent={siteData.siteContent} />
-      <Portfolio lang={lang} siteContent={siteData.siteContent} worksData={siteData.works} />
-      <Process lang={lang} siteContent={siteData.siteContent} />
-      <Pricing lang={lang} siteContent={siteData.siteContent} pricingData={siteData.pricing} />
-      <Testimonials lang={lang} siteContent={siteData.siteContent} />
-      <Contact lang={lang} siteContent={siteData.siteContent} commissionStatus={commissionStatus} />
-      <Footer lang={lang} siteContent={siteData.siteContent} />
-      <FloatingEditButton />
-    </div>
+    </ClickSpark>
   );
 }
 

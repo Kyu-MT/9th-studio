@@ -3,73 +3,82 @@
     {
       "id": 1,
       "category": "vtuber",
+      "media_type": "video",
       "title": "VTuber Model #1",
       "desc": "Full-body Live2D VTuber model with physics and expressions.",
-      "video": "https://aka.doubaocdn.com/s/yxMVuki22U",
+      "media_url": "https://aka.doubaocdn.com/s/yxMVuki22U",
       "tech": ["Live2D Cubism", "Physics", "Expressions"]
     },
     {
       "id": 2,
       "category": "vtuber",
+      "media_type": "video",
       "title": "VTuber Model #2",
       "desc": "Half-body VTuber model with detailed hair physics.",
-      "video": "https://aka.doubaocdn.com/s/mQRJqSUK5F",
+      "media_url": "https://aka.doubaocdn.com/s/mQRJqSUK5F",
       "tech": ["Live2D Cubism", "Hair Physics"]
     },
     {
       "id": 3,
       "category": "vtuber",
+      "media_type": "video",
       "title": "VTuber Model #3",
       "desc": "Chibi-style VTuber model with cute animations.",
-      "video": "https://aka.doubaocdn.com/s/Mzh27633D7",
+      "media_url": "https://aka.doubaocdn.com/s/Mzh27633D7",
       "tech": ["Live2D Cubism", "Chibi Rig"]
     },
     {
       "id": 4,
       "category": "vtuber",
+      "media_type": "video",
       "title": "VTuber Model #4",
       "desc": "Cool-style male VTuber model with dynamic poses.",
-      "video": "https://aka.doubaocdn.com/s/kPSpx1TVWq",
+      "media_url": "https://aka.doubaocdn.com/s/kPSpx1TVWq",
       "tech": ["Live2D Cubism", "Dynamic Poses"]
     },
     {
       "id": 5,
       "category": "vtuber",
+      "media_type": "video",
       "title": "VTuber Model #5",
       "desc": "Fantasy-themed VTuber model with accessories.",
-      "video": "https://aka.doubaocdn.com/s/AYfTwnsvAV",
+      "media_url": "https://aka.doubaocdn.com/s/AYfTwnsvAV",
       "tech": ["Live2D Cubism", "Accessories"]
     },
     {
       "id": 6,
       "category": "live2d",
+      "media_type": "video",
       "title": "Live2D Animation #1",
       "desc": "Smooth Live2D animation showcase with head turns.",
-      "video": "https://aka.doubaocdn.com/s/nFqPaykcmV",
+      "media_url": "https://aka.doubaocdn.com/s/nFqPaykcmV",
       "tech": ["Live2D Animation", "Head Tracking"]
     },
     {
       "id": 7,
       "category": "live2d",
+      "media_type": "video",
       "title": "Live2D Animation #2",
       "desc": "Body movement and breathing animation demo.",
-      "video": "https://aka.doubaocdn.com/s/2egKU2qHvI",
+      "media_url": "https://aka.doubaocdn.com/s/2egKU2qHvI",
       "tech": ["Live2D Animation", "Body Physics"]
     },
     {
       "id": 8,
       "category": "live2d",
+      "media_type": "video",
       "title": "Live2D Animation #3",
       "desc": "Expression and emotion transition showcase.",
-      "video": "https://aka.doubaocdn.com/s/yl7vwQpdYs",
+      "media_url": "https://aka.doubaocdn.com/s/yl7vwQpdYs",
       "tech": ["Live2D Animation", "Expressions"]
     },
     {
       "id": 9,
       "category": "live2d",
+      "media_type": "video",
       "title": "Live2D Animation #4",
       "desc": "Hand gestures and interactive motion demo.",
-      "video": "https://aka.doubaocdn.com/s/wrz0b50tkZ",
+      "media_url": "https://aka.doubaocdn.com/s/wrz0b50tkZ",
       "tech": ["Live2D Animation", "Hand Motion"]
     }
   ]

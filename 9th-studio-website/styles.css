@@ -494,6 +494,98 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   border-radius: 999px; font-size: 12px; font-weight: 500; color: var(--text-1);
 }
 
+/* ========== React Bits inspired interactions ========== */
+.shuffle-text { display: inline-block; }
+.shuffle-text-char { display: inline-block; min-width: 0.08em; }
+
+.specular-button {
+  --specular-x: 50%;
+  --specular-y: 50%;
+  --specular-opacity: 0;
+  isolation: isolate;
+  overflow: hidden;
+}
+.specular-button::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  pointer-events: none;
+  opacity: var(--specular-opacity);
+  transition: opacity 180ms ease;
+  background: radial-gradient(180px circle at var(--specular-x) var(--specular-y), rgba(255,255,255,0.46) 0%, rgba(255,218,246,0.14) 25%, transparent 68%);
+  mix-blend-mode: screen;
+  z-index: 0;
+}
+.specular-button:hover { border-color: rgba(255, 232, 249, 0.72); box-shadow: 0 0 0 1px rgba(255, 154, 215, 0.15), 0 12px 32px rgba(135, 78, 235, 0.16); }
+.filter-btn.is-active { background: var(--text-0); border-color: var(--text-0); color: var(--bg-0); font-weight: 600; }
+
+.click-spark-host { min-height: 100vh; }
+.click-spark-canvas { position: fixed; inset: 0; z-index: 9998; pointer-events: none; }
+
+/* Accordion Gallery */
+.accordion-gallery {
+  display: flex;
+  gap: 12px;
+  height: 520px;
+  width: 100%;
+  perspective: 1200px;
+}
+.accordion-panel {
+  min-width: 0;
+  position: relative;
+  overflow: hidden;
+  border-radius: 22px;
+  border: 1px solid var(--stroke);
+  background: var(--bg-2);
+  color: var(--text-0);
+  text-align: left;
+  transition: flex-grow 640ms cubic-bezier(.22, .8, .2, 1), transform 640ms cubic-bezier(.22, .8, .2, 1), border-color 300ms ease;
+  transform: rotateY(-5deg);
+  transform-origin: center;
+}
+.accordion-panel:first-child { transform: rotateY(5deg); }
+.accordion-panel.is-active { transform: rotateY(0); border-color: rgba(255, 181, 230, 0.42); }
+.accordion-panel:focus-visible { outline: 2px solid var(--accent-2); outline-offset: 3px; }
+.accordion-panel-media { position: absolute; inset: 0; }
+.accordion-panel-media img { width: 100%; height: 100%; object-fit: cover; transition: transform 700ms cubic-bezier(.22, .8, .2, 1), filter 500ms ease; filter: grayscale(.7) brightness(.68); }
+.accordion-panel.is-active .accordion-panel-media img { transform: scale(1.05); filter: grayscale(0) brightness(.9); }
+.work-cover-fallback {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  place-items: center;
+  background:
+    radial-gradient(circle at 70% 22%, rgba(255, 147, 215, .72), transparent 25%),
+    radial-gradient(circle at 23% 75%, rgba(91, 189, 255, .55), transparent 35%),
+    linear-gradient(145deg, #21133e 0%, #100b25 48%, #40245b 100%);
+}
+.work-cover-fallback span { font-family: var(--font-display); font-size: clamp(52px, 11vw, 130px); font-weight: 800; color: rgba(255,255,255,.74); text-shadow: 0 12px 40px rgba(0,0,0,.3); }
+.accordion-panel-shade { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(6, 4, 18, .08) 14%, rgba(7, 4, 18, .22) 47%, rgba(5, 3, 14, .94) 100%); pointer-events: none; }
+.accordion-panel-label {
+  position: absolute;
+  left: 22px;
+  right: 22px;
+  bottom: 22px;
+  display: flex;
+  align-items: flex-end;
+  gap: 12px;
+  opacity: .4;
+  transform: translateY(5px);
+  transition: opacity 350ms ease, transform 450ms cubic-bezier(.22, .8, .2, 1);
+  pointer-events: none;
+}
+.accordion-panel.is-active .accordion-panel-label { opacity: 1; transform: translateY(0); }
+.accordion-panel-bar { width: 3px; height: 54px; flex: 0 0 auto; border-radius: 99px; background: var(--accent-2); box-shadow: 0 0 16px rgba(255,110,199,.75); }
+.accordion-panel-label > span:last-child { min-width: 0; display: flex; flex-direction: column; gap: 3px; }
+.accordion-panel-category { font-family: var(--font-mono); color: #ffb8e4; font-size: 10px; letter-spacing: .12em; text-transform: uppercase; }
+.accordion-panel-label strong { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-family: var(--font-display); font-size: clamp(16px, 1.7vw, 23px); line-height: 1.25; }
+.accordion-panel-label small { max-width: 44ch; color: var(--text-1); font-size: 12px; line-height: 1.45; }
+.portfolio-empty { text-align: center; color: var(--text-2); padding: 56px 20px; border: 1px dashed var(--stroke-2); border-radius: var(--radius-lg); }
+.modal-media iframe, .modal-media video, .modal-media > img { width: 100%; height: 100%; border: 0; object-fit: contain; }
+.media-unavailable, .media-external-link { width: 100%; height: 100%; display: grid; place-items: center; padding: 32px; text-align: center; color: var(--text-1); background: linear-gradient(135deg, #160e2a, #0c0919); }
+.media-external-link { color: #ffd0ec; text-decoration: underline; text-underline-offset: 4px; }
+.work-source-link { display: inline-flex; margin: -6px 0 20px; color: var(--accent-2); font-size: 13px; font-weight: 600; text-decoration: underline; text-underline-offset: 4px; }
+
 /* ========== Process ========== */
 .process-timeline { display: grid; grid-template-columns: repeat(6, 1fr); gap: 16px; position: relative; }
 .process-timeline::before {
@@ -685,12 +777,24 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   .modal-overlay { padding: 16px; }
   .modal-body { padding: 24px; }
   .modal-title { font-size: 22px; }
+  .accordion-gallery { height: 480px; gap: 8px; perspective: none; }
+  .accordion-panel, .accordion-panel:first-child, .accordion-panel.is-active { transform: none; }
+  .accordion-panel-label { left: 14px; right: 14px; bottom: 16px; gap: 8px; }
+  .accordion-panel-bar { width: 2px; height: 42px; }
+  .accordion-panel-label strong { font-size: 14px; }
+  .accordion-panel-label small { display: none; }
 }
 @media (max-width: 480px) {
   .hero-name { font-size: 40px; }
   .section-title { font-size: 28px; }
   .avatar-wrapper { max-width: 260px; }
   .avatar-badge { font-size: 11px; padding: 6px 12px; }
+  .accordion-gallery { height: 440px; gap: 6px; }
+  .accordion-panel-label { writing-mode: vertical-rl; align-items: flex-end; }
+  .accordion-panel-label > span:last-child { gap: 7px; }
+  .accordion-panel-category { font-size: 9px; }
+  .accordion-panel-label strong { white-space: normal; font-size: 13px; }
+  .accordion-panel-bar { height: 34px; }
 }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }

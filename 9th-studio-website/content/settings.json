@@ -1,5 +1,17 @@
 {
   "commission_status": "open",
   "logo_url": "",
-  "avatar_url": ""
+  "avatar_url": "",
+  "site_name": "9th Studio",
+  "display_name": "Kyuu",
+  "hero_greeting": "",
+  "hero_subtitle": "",
+  "hero_tagline": "",
+  "about_title": "",
+  "about_subtitle": "",
+  "about_text_1": "",
+  "about_text_2": "",
+  "contact_email": "contact@9thstudio.com",
+  "contact_discord": "@kyu_506",
+  "contact_social": "@kyu_506"
 }

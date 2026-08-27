@@ -30,6 +30,54 @@ collections:
             widget: "string"
             required: false
             hint: "留空则使用默认头像"
+          - label: "网站名称"
+            name: "site_name"
+            widget: "string"
+            hint: "显示在导航栏与页脚，例如 9th Studio"
+          - label: "主理人显示名称"
+            name: "display_name"
+            widget: "string"
+            hint: "显示在首屏的大标题中"
+          - label: "首屏问候语（可选）"
+            name: "hero_greeting"
+            widget: "string"
+            required: false
+            hint: "留空则使用现有多语言文字"
+          - label: "首屏副标题（可选）"
+            name: "hero_subtitle"
+            widget: "string"
+            required: false
+            hint: "留空则使用现有多语言文字"
+          - label: "首屏简介（可选）"
+            name: "hero_tagline"
+            widget: "text"
+            required: false
+            hint: "留空则使用现有多语言文字"
+          - label: "关于我标题（可选）"
+            name: "about_title"
+            widget: "string"
+            required: false
+          - label: "关于我副标题（可选）"
+            name: "about_subtitle"
+            widget: "string"
+            required: false
+          - label: "关于我第一段（可选）"
+            name: "about_text_1"
+            widget: "text"
+            required: false
+          - label: "关于我第二段（可选）"
+            name: "about_text_2"
+            widget: "text"
+            required: false
+          - label: "联络邮箱"
+            name: "contact_email"
+            widget: "string"
+          - label: "Discord"
+            name: "contact_discord"
+            widget: "string"
+          - label: "社交账号或链接"
+            name: "contact_social"
+            widget: "string"
 
   - name: "works"
     label: "作品展示"
@@ -54,7 +102,28 @@ collections:
                   - { label: "VTS 挂件", value: "vts" }
                   - { label: "表情包", value: "emoji" }
               - { label: "描述", name: "desc", widget: "text" }
-              - { label: "视频链接", name: "video", widget: "string", hint: "mp4 视频的 URL 地址" }
+              - label: "封面图片"
+                name: "cover_image"
+                widget: "image"
+                required: false
+                hint: "作品列表展示用。建议上传或选择压缩过的 JPG/WebP 图片，而不是影片。"
+              - label: "作品类型"
+                name: "media_type"
+                widget: "select"
+                default: "video"
+                options:
+                  - { label: "影片（以链接播放）", value: "video" }
+                  - { label: "图片作品", value: "image" }
+              - label: "作品影片或图片链接"
+                name: "media_url"
+                widget: "string"
+                required: false
+                hint: "影片请贴上 YouTube、Vimeo 或 MP4 链接；图片作品可贴图片链接。不会上传大型影片。"
+              - label: "外部作品页面链接"
+                name: "source_url"
+                widget: "string"
+                required: false
+                hint: "可选。让访客前往 YouTube、Bilibili、X、ArtStation 等原始页面。"
               - label: "使用技术"
                 name: "tech"
                 widget: "list"
