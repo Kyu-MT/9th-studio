@@ -495,29 +495,69 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 }
 
 /* ========== React Bits inspired interactions ========== */
-.shuffle-text { display: inline-block; }
-.shuffle-text-char { display: inline-block; min-width: 0.08em; }
+.warp-text {
+  --warp-x: 50%;
+  --warp-y: 50%;
+  --warp-shift-x: 0px;
+  --warp-shift-y: 0px;
+  --warp-lens-opacity: 0;
+  position: relative;
+  display: block;
+  isolation: isolate;
+}
+.warp-text-defs { position: absolute; width: 0; height: 0; overflow: hidden; pointer-events: none; }
+.warp-text-content {
+  position: relative;
+  display: inline-block;
+  color: var(--warp-color, currentColor);
+  transform: translate(var(--warp-shift-x), var(--warp-shift-y));
+  transition: transform 120ms ease-out;
+  will-change: transform, filter;
+}
+.warp-text-lens {
+  position: absolute;
+  left: var(--warp-x);
+  top: var(--warp-y);
+  width: var(--warp-lens-size, 140px);
+  height: var(--warp-lens-size, 140px);
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  pointer-events: none;
+  opacity: var(--warp-lens-opacity);
+  transition: opacity 180ms ease;
+  background: radial-gradient(circle, rgba(255,255,255,0.13) 0%, rgba(211,178,255,0.055) 34%, transparent 70%);
+  mix-blend-mode: screen;
+}
 
 .specular-button {
   --specular-x: 50%;
   --specular-y: 50%;
   --specular-opacity: 0;
+  position: relative;
   isolation: isolate;
   overflow: hidden;
+  overflow: clip;
+  contain: paint;
+  transform: translateZ(0);
+  -webkit-mask-image: -webkit-radial-gradient(white, black);
 }
 .specular-button::before {
   content: "";
   position: absolute;
-  inset: 0;
+  inset: 2px;
   border-radius: inherit;
   pointer-events: none;
   opacity: var(--specular-opacity);
   transition: opacity 180ms ease;
-  background: radial-gradient(145px circle at var(--specular-x) var(--specular-y), rgba(255,255,255,0.36) 0%, rgba(255,218,246,0.10) 24%, transparent 60%);
+  background: radial-gradient(82px circle at var(--specular-x) var(--specular-y), rgba(255,255,255,0.30) 0%, rgba(255,218,246,0.08) 25%, transparent 58%);
+  background-clip: padding-box;
+  clip-path: inset(0 round 999px);
   z-index: 0;
 }
+.specular-button > * { position: relative; z-index: 1; }
 .specular-button:hover { border-color: rgba(255, 232, 249, 0.72); box-shadow: inset 0 0 0 1px rgba(255, 154, 215, 0.18); }
 .filter-btn.is-active { background: var(--text-0); border-color: var(--text-0); color: var(--bg-0); font-weight: 600; }
+.filter-btn.specular-button::before { inset: 3px; border-radius: 999px; clip-path: inset(0 round 999px); }
 
 .click-spark-host { min-height: 100vh; }
 .click-spark-canvas { position: fixed; inset: 0; z-index: 9998; pointer-events: none; }
@@ -790,6 +830,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 @media (max-width: 480px) {
   .hero-name { font-size: 40px; }
   .section-title { font-size: 28px; }
+  .warp-text-content { filter: none !important; }
   .avatar-wrapper { max-width: 260px; }
   .avatar-badge { font-size: 11px; padding: 6px 12px; }
   .accordion-gallery { height: 440px; gap: 6px; }

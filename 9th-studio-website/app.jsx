@@ -22,50 +22,53 @@ function getText(field, lang, fallback) {
   return field[lang] || field["zh-TW"] || field["en"] || fallback || "";
 }
 
-// ========== 轻量互动组件 ==========
-// 这些组件以 CSS 与浏览器原生 API 实作，维持静态网站可直接部署的特性。
-const SHUFFLE_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%&*";
-
-function ShuffleText({ text, tag = "span", className = "" }) {
-  const [display, setDisplay] = useState(text || "");
-  const timersRef = useRef([]);
+// ========== React Bits: WarpText ==========
+// SVG displacement keeps the effect reliable in this no-build static site.
+function WarpText({
+  text = "Bend the moment", color = "#f8f5ff", warpStrength = 0.08,
+  warpScale = 1.7, speed = 0.55, pointerInfluence = 0.42,
+  pointerStrength = 0.38, refraction = 0.018, ripple = true,
+  tag = "div", className = "", style
+}) {
+  const rootRef = useRef(null);
+  const filterId = useRef("warp-text-" + Math.random().toString(36).slice(2));
   const Tag = tag;
+  const distortion = Math.max(3, Math.round(warpStrength * 220));
+  const lensSize = Math.round(90 + pointerInfluence * 160);
+  const duration = Math.max(4, Math.round(14 / Math.max(speed, 0.1)));
 
-  const clearTimers = useCallback(() => {
-    timersRef.current.forEach((timer) => window.clearTimeout(timer));
-    timersRef.current = [];
-  }, []);
-
-  const play = useCallback(() => {
-    clearTimers();
-    const finalChars = Array.from(text || "");
-    if (!finalChars.length) {
-      setDisplay("");
-      return;
-    }
-    const frames = 6;
-    for (let frame = 0; frame < frames; frame += 1) {
-      const timer = window.setTimeout(() => {
-        const next = finalChars.map((char, index) => {
-          if (char === " " || frame === frames - 1 || index <= frame) return char;
-          return SHUFFLE_CHARS[Math.floor(Math.random() * SHUFFLE_CHARS.length)];
-        }).join("");
-        setDisplay(next);
-      }, frame * 56);
-      timersRef.current.push(timer);
-    }
-  }, [clearTimers, text]);
-
-  useEffect(() => {
-    play();
-    return clearTimers;
-  }, [play, clearTimers]);
+  const movePointer = (event) => {
+    const rect = rootRef.current?.getBoundingClientRect();
+    if (!rect) return;
+    const x = (event.clientX - rect.left) / rect.width;
+    const y = (event.clientY - rect.top) / rect.height;
+    const root = rootRef.current;
+    root.style.setProperty("--warp-x", (x * 100) + "%");
+    root.style.setProperty("--warp-y", (y * 100) + "%");
+    root.style.setProperty("--warp-shift-x", ((x - 0.5) * pointerStrength * 8) + "px");
+    root.style.setProperty("--warp-shift-y", ((y - 0.5) * pointerStrength * 8) + "px");
+    root.style.setProperty("--warp-lens-opacity", "1");
+  };
 
   return (
-    <Tag className={"shuffle-text " + className} onMouseEnter={play} aria-label={text}>
-      {Array.from(display).map((char, index) => (
-        <span className="shuffle-text-char" aria-hidden="true" key={index}>{char === " " ? "\u00a0" : char}</span>
-      ))}
+    <Tag
+      ref={rootRef}
+      className={("warp-text " + className).trim()}
+      style={{ ...style, "--warp-color": color, "--warp-lens-size": lensSize + "px" }}
+      onPointerMove={movePointer}
+      onPointerLeave={() => rootRef.current?.style.setProperty("--warp-lens-opacity", "0")}
+      aria-label={text}
+    >
+      <svg className="warp-text-defs" aria-hidden="true" focusable="false">
+        <filter id={filterId.current} x="-12%" y="-35%" width="124%" height="170%">
+          <feTurbulence type="fractalNoise" baseFrequency={(0.006 * warpScale) + " " + (0.03 * warpScale)} numOctaves="2" seed="8" result="noise">
+            <animate attributeName="baseFrequency" values={(0.005 * warpScale) + " " + (0.025 * warpScale) + ";" + (0.012 * warpScale) + " " + (0.042 * warpScale) + ";" + (0.005 * warpScale) + " " + (0.025 * warpScale)} dur={duration + "s"} repeatCount="indefinite" />
+          </feTurbulence>
+          <feDisplacementMap in="SourceGraphic" in2="noise" scale={distortion} xChannelSelector="R" yChannelSelector="G" />
+        </filter>
+      </svg>
+      <span className="warp-text-content" style={{ filter: "url(#" + filterId.current + ")" }} data-text={text}>{text}</span>
+      {ripple && <span className="warp-text-lens" aria-hidden="true" style={{ "--warp-refraction": refraction }} />}
     </Tag>
   );
 }
@@ -357,7 +360,7 @@ function Hero({ lang, siteContent, commissionStatus, avatarUrl, settings }) {
             <span>{badgeText}</span>
           </div>
           <div className="hero-greeting">{greeting}</div>
-          <ShuffleText tag="h1" className="hero-name" text={ownerName} />
+          <WarpText tag="h1" className="hero-name" text={ownerName} color="#f7f5ff" warpStrength={0.09} warpScale={1.55} speed={0.48} pointerStrength={0.46} />
           <div className="hero-subtitle">{subtitle}</div>
           <div className="hero-title">
             <span>Live 2D 建模师</span><span className="dot"></span>
@@ -406,7 +409,7 @@ function About({ lang, siteContent, avatarUrl, settings }) {
       <div className="section-inner">
         <div className="section-head reveal">
           <div className="eyebrow">{getText(about.eyebrow, lang, "ABOUT ME")}</div>
-          <ShuffleText tag="h2" className="section-title" text={settings?.about_title || getText(about.title, lang, "About Me")} />
+          <WarpText tag="h2" className="section-title" text={settings?.about_title || getText(about.title, lang, "About Me")} color="#c9c3e2" warpStrength={0.055} warpScale={1.35} pointerStrength={0.3} />
           <p className="section-subtitle">{settings?.about_subtitle || getText(about.subtitle, lang, "")}</p>
         </div>
         <div className="about-grid">
@@ -446,7 +449,7 @@ function Services({ lang, siteContent }) {
       <div className="section-inner">
         <div className="section-head reveal">
           <div className="eyebrow">{getText(labels.eyebrow, lang, "SERVICES")}</div>
-          <ShuffleText tag="h2" className="section-title" text={getText(labels.title, lang, "Services")} />
+          <WarpText tag="h2" className="section-title" text={getText(labels.title, lang, "Services")} color="#c9c3e2" warpStrength={0.055} warpScale={1.35} pointerStrength={0.3} />
           <p className="section-subtitle">{getText(labels.subtitle, lang, "")}</p>
         </div>
         <div className="services-grid">
@@ -499,7 +502,7 @@ function Portfolio({ lang, siteContent, worksData }) {
       <div className="section-inner">
         <div className="section-head reveal">
           <div className="eyebrow">{getText(labels.eyebrow, lang, "PORTFOLIO")}</div>
-          <ShuffleText tag="h2" className="section-title" text={getText(labels.title, lang, "Portfolio")} />
+          <WarpText tag="h2" className="section-title" text={getText(labels.title, lang, "Portfolio")} color="#c9c3e2" warpStrength={0.055} warpScale={1.35} pointerStrength={0.3} />
           <p className="section-subtitle">{getText(labels.subtitle, lang, "")}</p>
         </div>
         <div className="filter-bar reveal">
@@ -584,7 +587,7 @@ function Process({ lang, siteContent }) {
       <div className="section-inner">
         <div className="section-head reveal">
           <div className="eyebrow">{getText(labels.eyebrow, lang, "WORKFLOW")}</div>
-          <ShuffleText tag="h2" className="section-title" text={getText(labels.title, lang, "Process")} />
+          <WarpText tag="h2" className="section-title" text={getText(labels.title, lang, "Process")} color="#c9c3e2" warpStrength={0.055} warpScale={1.35} pointerStrength={0.3} />
           <p className="section-subtitle">{getText(labels.subtitle, lang, "")}</p>
         </div>
         <div className="process-timeline" style={{ "--process-count": Math.max(steps.length, 1) }}>
@@ -609,7 +612,7 @@ function Pricing({ lang, siteContent, pricingData }) {
       <div className="section-inner">
         <div className="section-head reveal">
           <div className="eyebrow">{getText(labels.eyebrow, lang, "PRICING")}</div>
-          <ShuffleText tag="h2" className="section-title" text={getText(labels.title, lang, "Pricing")} />
+          <WarpText tag="h2" className="section-title" text={getText(labels.title, lang, "Pricing")} color="#c9c3e2" warpStrength={0.055} warpScale={1.35} pointerStrength={0.3} />
           <p className="section-subtitle">{getText(labels.subtitle, lang, "")}</p>
         </div>
         <div className="pricing-grid">
@@ -643,7 +646,7 @@ function Testimonials({ lang, siteContent, testimonialsData }) {
       <div className="section-inner">
         <div className="section-head reveal">
           <div className="eyebrow">{getText(labels.eyebrow, lang, "TESTIMONIALS")}</div>
-          <ShuffleText tag="h2" className="section-title" text={getText(labels.title, lang, "Reviews")} />
+          <WarpText tag="h2" className="section-title" text={getText(labels.title, lang, "Reviews")} color="#c9c3e2" warpStrength={0.055} warpScale={1.35} pointerStrength={0.3} />
         </div>
         <div className="testimonials-grid">
           {items.map((item, i) => (
@@ -682,7 +685,7 @@ function Contact({ lang, siteContent, commissionStatus, settings }) {
       <div className="section-inner">
         <div className="section-head reveal">
           <div className="eyebrow">{getText(labels.eyebrow, lang, "CONTACT")}</div>
-          <ShuffleText tag="h2" className="section-title" text={getText(labels.title, lang, "Contact")} />
+          <WarpText tag="h2" className="section-title" text={getText(labels.title, lang, "Contact")} color="#c9c3e2" warpStrength={0.055} warpScale={1.35} pointerStrength={0.3} />
           <p className="section-subtitle">{getText(labels.subtitle, lang, "")}</p>
         </div>
         <div className="contact-grid">
