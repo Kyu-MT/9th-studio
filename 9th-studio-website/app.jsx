@@ -229,8 +229,9 @@ function PortfolioMedia({ work }) {
 }
 
 // ========== 滚动动画 Hook ==========
-function useScrollReveal() {
+function useScrollReveal(ready) {
   useEffect(() => {
+    if (!ready) return undefined;
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
@@ -241,7 +242,7 @@ function useScrollReveal() {
     }, { threshold: 0.1, rootMargin: "0px 0px -50px 0px" });
     document.querySelectorAll(".reveal, .reveal-scale").forEach((el) => observer.observe(el));
     return () => observer.disconnect();
-  }, []);
+  }, [ready]);
 }
 
 // ========== 导航栏 ==========
@@ -805,7 +806,6 @@ function FloatingEditButton() {
 // ========== App ==========
 function App() {
   const { lang, setLang } = useLanguage();
-  useScrollReveal();
 
   const [siteData, setSiteData] = useState({
     loading: true,
@@ -814,6 +814,7 @@ function App() {
     pricing: [],
     siteContent: {},
   });
+  useScrollReveal(!siteData.loading);
 
   useEffect(() => {
     let cancelled = false;
