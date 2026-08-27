@@ -13,5 +13,23 @@
   "about_text_2": "",
   "contact_email": "contact@9thstudio.com",
   "contact_discord": "@kyu_506",
-  "contact_social": "@kyu_506"
+  "contact_social": "@kyu_506",
+  "contact_items": [
+    {
+      "label": "电子邮件",
+      "value": "contact@9thstudio.com",
+      "link": "mailto:contact@9thstudio.com",
+      "icon_text": "✉"
+    },
+    {
+      "label": "Discord",
+      "value": "@kyu_506",
+      "icon_text": "◉"
+    },
+    {
+      "label": "社交媒体",
+      "value": "@kyu_506",
+      "icon_text": "◎"
+    }
+  ]
 }

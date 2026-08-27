@@ -78,6 +78,18 @@ collections:
           - label: "社交账号或链接"
             name: "contact_social"
             widget: "string"
+          - label: "联系方式项目（可自由新增、删除及排序）"
+            name: "contact_items"
+            widget: "list"
+            required: false
+            summary: "{{fields.label}} — {{fields.value}}"
+            hint: "可上传任意图标图片；也可用图标文字或 Emoji。链接可填写 https://、mailto: 或 tel:。"
+            fields:
+              - { label: "项目名称", name: "label", widget: "string", hint: "例如：Email、Discord、X、YouTube" }
+              - { label: "显示内容", name: "value", widget: "string", hint: "例如：hello@example.com、@username" }
+              - { label: "点击链接（可选）", name: "link", widget: "string", required: false, hint: "例如 mailto:hello@example.com、https://discord.gg/..." }
+              - { label: "图标图片（可选）", name: "icon_image", widget: "image", required: false, hint: "上传 PNG、SVG 或 WebP 图标；有图片时会优先显示。" }
+              - { label: "图标文字／Emoji（可选）", name: "icon_text", widget: "string", required: false, hint: "没有上传图标图片时使用，例如 ✉、◎、▶" }
 
   - name: "works"
     label: "作品展示"
@@ -106,7 +118,12 @@ collections:
                 name: "cover_image"
                 widget: "image"
                 required: false
-                hint: "作品列表展示用。建议上传或选择压缩过的 JPG/WebP 图片，而不是影片。"
+                hint: "作品详情备用图片。建议上传或选择压缩过的 JPG/WebP 图片，而不是影片。"
+              - label: "作品缩图（列表展示）"
+                name: "thumbnail_image"
+                widget: "image"
+                required: false
+                hint: "作品集手风琴列表优先显示此图。建议使用 4:3 或裁切清晰的 JPG/WebP 图片。"
               - label: "作品类型"
                 name: "media_type"
                 widget: "select"
@@ -119,11 +136,6 @@ collections:
                 widget: "string"
                 required: false
                 hint: "影片请贴上 YouTube、Vimeo 或 MP4 链接；图片作品可贴图片链接。不会上传大型影片。"
-              - label: "外部作品页面链接"
-                name: "source_url"
-                widget: "string"
-                required: false
-                hint: "可选。让访客前往 YouTube、Bilibili、X、ArtStation 等原始页面。"
               - label: "使用技术"
                 name: "tech"
                 widget: "list"

@@ -271,8 +271,8 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 
 /* ========== Hero ========== */
 .hero {
-  min-height: 100vh; display: flex; align-items: center;
-  padding-top: calc(var(--nav-h) + 40px); padding-bottom: 60px;
+  position: relative; min-height: 100vh; display: flex; align-items: center;
+  padding-top: calc(var(--nav-h) + 40px); padding-bottom: 112px;
 }
 .hero-inner {
   max-width: var(--max-w); margin: 0 auto; padding: 0 32px;
@@ -340,10 +340,10 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 @keyframes badge-float-3 { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
 
 .scroll-hint {
-  position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%);
+  position: absolute; bottom: max(22px, env(safe-area-inset-bottom)); left: 50%; transform: translateX(-50%); z-index: 2;
   display: flex; flex-direction: column; align-items: center; gap: 8px;
   color: var(--text-3); font-size: 12px; font-family: var(--font-mono);
-  letter-spacing: 0.1em; text-transform: uppercase;
+  letter-spacing: 0.1em; text-transform: uppercase; text-decoration: none; cursor: pointer;
 }
 .scroll-hint .mouse {
   width: 22px; height: 36px; border: 2px solid var(--text-3); border-radius: 12px; position: relative;
@@ -623,9 +623,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 .accordion-panel-label small { max-width: 44ch; color: var(--text-1); font-size: 12px; line-height: 1.45; }
 .portfolio-empty { text-align: center; color: var(--text-2); padding: 56px 20px; border: 1px dashed var(--stroke-2); border-radius: var(--radius-lg); }
 .modal-media iframe, .modal-media video, .modal-media > img { width: 100%; height: 100%; border: 0; object-fit: contain; }
-.media-unavailable, .media-external-link { width: 100%; height: 100%; display: grid; place-items: center; padding: 32px; text-align: center; color: var(--text-1); background: linear-gradient(135deg, #160e2a, #0c0919); }
-.media-external-link { color: #ffd0ec; text-decoration: underline; text-underline-offset: 4px; }
-.work-source-link { display: inline-flex; margin: -6px 0 20px; color: var(--accent-2); font-size: 13px; font-weight: 600; text-decoration: underline; text-underline-offset: 4px; }
+.media-unavailable { width: 100%; height: 100%; display: grid; place-items: center; padding: 32px; text-align: center; color: var(--text-1); background: linear-gradient(135deg, #160e2a, #0c0919); }
 
 /* ========== Process ========== */
 .process-timeline { display: grid; grid-template-columns: repeat(var(--process-count, 6), minmax(0, 1fr)); gap: 16px; position: relative; }
@@ -729,12 +727,15 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   border: 1px solid var(--stroke); border-radius: var(--radius-md); transition: all 0.25s ease;
 }
 .contact-item:hover { border-color: var(--accent-1); transform: translateX(4px); }
+.contact-item-custom { text-decoration: none; }
 .contact-item-icon {
   width: 44px; height: 44px; flex-shrink: 0; border-radius: 12px;
   background: rgba(185, 103, 255, 0.15); border: 1px solid rgba(185, 103, 255, 0.3);
   display: flex; align-items: center; justify-content: center; color: var(--accent-1);
 }
 .contact-item-icon svg { width: 20px; height: 20px; }
+.contact-item-icon img { width: 22px; height: 22px; object-fit: contain; }
+.contact-item-symbol { font-size: 21px; line-height: 1; }
 .contact-item-label { font-size: 12px; color: var(--text-3); font-weight: 500; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.08em; }
 .contact-item-value { font-size: 15px; font-weight: 600; color: var(--text-0); }
 

@@ -177,6 +177,13 @@ function safeMediaUrl(value) {
   }
 }
 
+function safeContactUrl(value) {
+  const url = (value || "").trim();
+  if (!url) return "";
+  if (url.startsWith("mailto:") || url.startsWith("tel:")) return url;
+  return safeMediaUrl(url);
+}
+
 function getEmbedUrl(url) {
   const safeUrl = safeMediaUrl(url);
   if (!safeUrl || safeUrl.startsWith("/") || safeUrl.startsWith(".")) return "";
@@ -204,12 +211,8 @@ function workMediaUrl(work) {
   return safeMediaUrl(work?.media_url || work?.video || "");
 }
 
-function workSourceUrl(work) {
-  return safeMediaUrl(work?.source_url || workMediaUrl(work));
-}
-
 function workCoverUrl(work) {
-  return safeMediaUrl(work?.cover_image || work?.cover || work?.image || "");
+  return safeMediaUrl(work?.thumbnail_image || work?.cover_image || work?.cover || work?.image || "");
 }
 
 function PortfolioMedia({ work }) {
@@ -228,11 +231,7 @@ function PortfolioMedia({ work }) {
   if (url && !failed) {
     return <video src={url} controls playsInline preload="metadata" onError={() => setFailed(true)} />;
   }
-  return (
-    <a className="media-external-link" href={url || "#"} target="_blank" rel="noopener noreferrer">
-      在原始平台观看作品 ↗
-    </a>
-  );
+  return <div className="media-unavailable">此作品目前无法在本站预览。</div>;
 }
 
 // ========== 滚动动画 Hook ==========
@@ -384,10 +383,10 @@ function Hero({ lang, siteContent, commissionStatus, avatarUrl, settings }) {
           </div>
         </div>
       </div>
-      <div className="scroll-hint">
+      <a className="scroll-hint" href="#about" aria-label="Scroll to about section">
         <div className="mouse"></div>
         <span>Scroll</span>
-      </div>
+      </a>
     </section>
   );
 }
@@ -528,7 +527,7 @@ function Portfolio({ lang, siteContent, worksData }) {
                 >
                   <div className="accordion-panel-media">
                     {coverUrl ? (
-                      <img src={coverUrl} alt={work.title || ""} />
+                      <img src={coverUrl} alt={work.title || ""} loading="lazy" />
                     ) : (
                       <div className="work-cover-fallback"><span>{String(work.title || "9").slice(0, 1)}</span></div>
                     )}
@@ -561,11 +560,6 @@ function Portfolio({ lang, siteContent, worksData }) {
               <div className="modal-category">{getText(catLabels[selected.category], lang, selected.category)}</div>
               <h2 className="modal-title">{selected.title}</h2>
               <p className="modal-desc">{selected.desc}</p>
-              {workSourceUrl(selected) && (
-                <a className="work-source-link" href={workSourceUrl(selected)} target="_blank" rel="noopener noreferrer">
-                  在原始平台打开 ↗
-                </a>
-              )}
               <div className="modal-tech-title">{getText(labels.tech, lang, "Tech")}</div>
               <div className="modal-tech-tags">
                 {selected.tech && selected.tech.map((tech, i) => (<span className="tech-tag" key={i}>{tech}</span>))}
@@ -676,6 +670,12 @@ function Contact({ lang, siteContent, commissionStatus, settings }) {
   const formLabels = labels.form || {};
   const typeOptions = siteContent?.commission_type_options || {};
   const contact = siteContent?.contact || {};
+  const defaultContactItems = [
+    { label: getText(labels.email_label, lang, "Email"), value: settings?.contact_email || contact.email || "contact@9thstudio.com", link: "mailto:" + (settings?.contact_email || contact.email || "contact@9thstudio.com"), icon_text: "✉" },
+    { label: getText(labels.discord_label, lang, "Discord"), value: settings?.contact_discord || contact.discord || "@kyu_506", icon_text: "◉" },
+    { label: getText(labels.social_label, lang, "Social"), value: settings?.contact_social || contact.social || "@kyu_506", icon_text: "◎" },
+  ];
+  const contactItems = Array.isArray(settings?.contact_items) ? settings.contact_items : defaultContactItems;
   const statusClass = commissionStatus === "open" ? "status-open" : commissionStatus === "full" ? "status-full" : "status-paused";
   const statusText = getText(siteContent?.commission?.status?.[commissionStatus], lang, "");
   const handleSubmit = (e) => { e.preventDefault(); setSent(true); setTimeout(() => setSent(false), 4000); setForm({ name: "", email: "", type: "", message: "" }); };
@@ -723,18 +723,19 @@ function Contact({ lang, siteContent, commissionStatus, settings }) {
                 <div className="commission-big-value">{statusText}</div>
               </div>
             </div>
-            <div className="contact-item reveal reveal-delay-1">
-              <div className="contact-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
-              <div><div className="contact-item-label">{getText(labels.email_label, lang, "Email")}</div><div className="contact-item-value">{settings?.contact_email || contact.email || "contact@9thstudio.com"}</div></div>
-            </div>
-            <div className="contact-item reveal reveal-delay-2">
-              <div className="contact-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div>
-              <div><div className="contact-item-label">{getText(labels.discord_label, lang, "Discord")}</div><div className="contact-item-value">{settings?.contact_discord || contact.discord || "@kyu_506"}</div></div>
-            </div>
-            <div className="contact-item reveal reveal-delay-3">
-              <div className="contact-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg></div>
-              <div><div className="contact-item-label">{getText(labels.social_label, lang, "Social")}</div><div className="contact-item-value">{settings?.contact_social || contact.social || "@kyu_506"}</div></div>
-            </div>
+            {contactItems.filter((item) => item?.label || item?.value).map((item, index) => {
+              const href = safeContactUrl(item.link);
+              const iconUrl = safeMediaUrl(item.icon_image);
+              const itemContent = <>
+                <div className="contact-item-icon">
+                  {iconUrl ? <img src={iconUrl} alt="" /> : <span className="contact-item-symbol">{item.icon_text || "✦"}</span>}
+                </div>
+                <div><div className="contact-item-label">{item.label || "Contact"}</div><div className="contact-item-value">{item.value || ""}</div></div>
+              </>;
+              const className = "contact-item contact-item-custom reveal reveal-delay-" + Math.min(index + 1, 3);
+              const key = item.id || item.label || index;
+              return href ? <a className={className} href={href} target={href.startsWith("http") ? "_blank" : undefined} rel={href.startsWith("http") ? "noopener noreferrer" : undefined} key={key}>{itemContent}</a> : <div className={className} key={key}>{itemContent}</div>;
+            })}
           </div>
         </div>
       </div>
