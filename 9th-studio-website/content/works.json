@@ -5,14 +5,14 @@
       "category": "vtuber",
       "media_type": "image",
       "title": "VTuber Model #1",
-      "desc": "Full-body Live2D VTuber model with physics and expressions.",
-      "media_url": "https://aka.doubaocdn.com/s/yxMVuki22U",
+      "desc": "Full-body Live2D VTuber model ",
+      "media_url": "https://www.youtube.com/watch?v=xZEovDidQrU&list=PLCs9YE4zDgJ9Kv5RiNHrIJAXaLxHIFZ_v&index=6",
       "tech": [
         "Live2D Cubism",
         "Physics",
         "Expressions"
       ],
-      "cover_image": "file:///C:/Users/Lenovo/Downloads/%E5%B1%95%E7%A4%BA5.gif"
+      "cover_image": "/assets/uploads/展示5.gif"
     },
     {
       "id": 2,
