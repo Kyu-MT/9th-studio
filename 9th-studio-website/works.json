@@ -65,12 +65,17 @@
       "tech": ["Live2D Animation", "Expressions"]
     },
     {
-      "id": 9,
-      "category": "live2d",
-      "title": "Live2D Animation #4",
-      "desc": "Hand gestures and interactive motion demo.",
-      "video": "https://aka.doubaocdn.com/s/wrz0b50tkZ",
-      "tech": ["Live2D Animation", "Hand Motion"]
-    }
+  "id": 9,
+  "category": "live2d",
+  "media_type": "video",
+  "title": "Live2D Animation #4",
+  "desc": "Hand gestures and interactive motion demo.",
+  "media_url": "https://aka.doubaocdn.com/s/wrz0b50tkZ",
+  "cover_image": "/assets/uploads/live2d-animation-4.jpg",
+  "tech": [
+    "Live2D Animation",
+    "Hand Motion"
+  ]
+}
   ]
 }
